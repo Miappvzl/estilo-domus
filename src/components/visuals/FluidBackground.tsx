@@ -1,18 +1,17 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useState, useEffect, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-// SHADER EVOLUCIONADO: Colores más frescos y frecuencia adaptativa
+// SHADER OPTIMIZADO: Colores limpios y matemáticas simplificadas
 const FluidShader = {
   uniforms: {
     uTime: { value: 0 },
     uResolution: { value: new THREE.Vector2() },
-    // Paleta "Ageless Luxury": Tonos pálidos, nada de amarillos saturados
-    uColorBase: { value: new THREE.Color("#F9F9F7") }, // Alabastro (Blanco roto)
-    uColorAccent1: { value: new THREE.Color("#E8E5Ergba(110, 195, 255, 0.72)0") }, // Piedra Cálida (Grisáceo)
-    uColorAccent2: { value: new THREE.Color("#D1Crgba(73, 176, 255, 0.5)9BC") }, // Cava Pálido (Oro frío)
+    uColorBase: { value: new THREE.Color("#F9F9F7") },
+    uColorAccent1: { value: new THREE.Color("#E8E5E0") },
+    uColorAccent2: { value: new THREE.Color("#D1C9BC") },
   },
   vertexShader: `
     varying vec2 vUv;
@@ -29,7 +28,6 @@ const FluidShader = {
     uniform vec3 uColorAccent2;
     varying vec2 vUv;
 
-    // Ruido Simplex para fluidez orgánica
     vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
     float snoise(vec2 v){
       const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
@@ -55,18 +53,13 @@ const FluidShader = {
     }
 
     void main() {
-      // Ajuste para móvil: Si la pantalla es estrecha, aumentamos la escala del ruido
       float ratio = uResolution.x / uResolution.y;
       vec2 uv = vUv;
+      float freq = mix(3.0, 1.5, clamp(ratio, 0.0, 1.0));
       
-      // Multiplicador de frecuencia: Más alto en móvil para ver más movimiento
-      float freq = mix(3.5, 2.0, clamp(ratio, 0.0, 1.0));
+      float n1 = snoise(uv * freq + uTime * 0.1);
+      float n2 = snoise(uv * (freq * 1.2) - uTime * 0.12 + n1);
       
-      // Capas de movimiento líquido
-      float n1 = snoise(uv * freq + uTime * 0.15);
-      float n2 = snoise(uv * (freq * 1.5) - uTime * 0.2 + n1);
-      
-      // Mezcla de colores (Ageless Palette)
       vec3 color = mix(uColorBase, uColorAccent1, n1 * 0.5 + 0.5);
       color = mix(color, uColorAccent2, n2 * 0.4);
       
@@ -88,7 +81,8 @@ function LiquidPlane() {
 
   return (
     <mesh scale={[viewport.width, viewport.height, 1]}>
-      <planeGeometry args={[1, 1, 16, 16]} />
+      {/* Geometría mínima para máximo rendimiento */}
+      <planeGeometry args={[1, 1, 8, 8]} />
       <shaderMaterial
         ref={materialRef}
         args={[FluidShader]}
@@ -105,23 +99,33 @@ export default function FluidBackground() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 w-screen h-[100dvh] -z-20 bg-[#F9F9F7] overflow-hidden pointer-events-none">
-      <Canvas
-        camera={{ position: [0, 0, 1] }}
-        dpr={[1, 1.5]} // Optimización para móviles
-        gl={{ antialias: false, powerPreference: "high-performance" }}
-      >
-        <LiquidPlane />
-      </Canvas>
+    <div className="fixed inset-0 w-screen h-[100dvh] -z-20 bg-[#F9F9F7] overflow-hidden pointer-events-none transform-gpu">
+      <Suspense fallback={null}>
+        <Canvas
+          // 1. Optimización de Resolución (DPR)
+          dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 1.2}
+          camera={{ position: [0, 0, 1] }}
+          gl={{ 
+            antialias: false, 
+            powerPreference: "high-performance",
+            stencil: false,
+            depth: false 
+          }}
+          style={{ width: '100%', height: '100%' }}
+        >
+          <LiquidPlane />
+        </Canvas>
+      </Suspense>
 
       {/* 
           OVERLAY EDITORIAL: 
-          Blur inteligente. Menos desenfoque en móvil para no lavar los colores.
+          Subimos el blur a un nivel medio (30-60) para la "sustancia",
+          pero lo mantenemos optimizado con transform-gpu.
       */}
-      <div className="absolute inset-0 bg-[#F9F9F7]/10 backdrop-blur-[5px] md:backdrop-blur-[5px]" />
+      <div className="absolute inset-0 bg-[#F9F9F7]/10 backdrop-blur-[25px] md:backdrop-blur-[30px] transform-gpu will-change-[backdrop-filter]" />
       
-      {/* Viñeta sutil para dar ese look de "revista de diseño" */}
-      <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-[#1A1A1A]/5 opacity-0" />
+      {/* Viñeta sutil para profundidad */}
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-[#1A1A1A]/5 opacity-20 pointer-events-none" />
     </div>
   );
 }

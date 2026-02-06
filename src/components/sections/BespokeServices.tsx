@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
-import { ArrowUpRight, ShieldCheck, Zap, Globe, Compass } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const SERVICES = [
   {
@@ -47,6 +47,7 @@ export default function BespokeServices() {
 
   return (
     <section className="relative w-full bg-transparent py-32 md:py-64 overflow-hidden">
+      {/* HEADER SECTION */}
       <div className="container mx-auto px-6 mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
         <div className="space-y-6">
           <div className="flex items-center gap-4">
@@ -88,6 +89,7 @@ export default function BespokeServices() {
                   src={service.image}
                   alt={service.title}
                   fill
+                  sizes="(max-width: 1200px) 25vw, 40vw"
                   className={`object-cover transition-all duration-1000 ease-[0.76, 0, 0.24, 1] ${
                     isHovered ? "scale-105 grayscale-0 brightness-[0.6]" : "scale-110 grayscale brightness-[0.3]"
                   }`}
@@ -149,6 +151,12 @@ export default function BespokeServices() {
   );
 }
 
+/**
+ * OPTIMIZACIÓN MÓVIL (60 FPS)
+ * 1. Quitamos Blur (Costoso para GPU).
+ * 2. Sombras optimizadas.
+ * 3. transform-gpu forzado.
+ */
 function MobileCard({ service, index }: { service: any; index: number }) {
   const cardRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -156,42 +164,52 @@ function MobileCard({ service, index }: { service: any; index: number }) {
     offset: ["start start", "end start"]
   });
 
-  // Animaciones de profundidad (Wallet Stacking)
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.88]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
-  const blur = useTransform(scrollYProgress, [0, 1], [0, 4]);
-  const springScale = useSpring(scale, { stiffness: 80, damping: 20 });
+  // Transformaciones suaves y ligeras para el procesador móvil
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
+  // Reemplazamos blur por una capa de sombra/oscuridad progresiva
+  const tint = useTransform(scrollYProgress, [0, 1], [0, 0.4]);
+
+  const springScale = useSpring(scale, { stiffness: 60, damping: 20 });
 
   return (
-    <div ref={cardRef} className="h-[600px] flex flex-col sticky top-[12vh]">
+    <div ref={cardRef} className="h-[580px] flex flex-col sticky top-[12vh]">
       <motion.div 
-        style={{ scale: springScale, opacity, filter: `blur(${blur}px)` }}
-        className="will-change-transform transform-gpu relative w-full h-full bg-carbon rounded-sm overflow-hidden shadow-[0_-30px_60px_rgba(0,0,0,0.6)] flex flex-col border border-crema/5"
+        style={{ scale: springScale, opacity }}
+        className="will-change-transform transform-gpu relative w-full h-full bg-carbon rounded-sm overflow-hidden shadow-2xl flex flex-col border border-crema/5"
       >
+        {/* Capa de oscurecimiento progresiva (más fluida que un blur) */}
+        <motion.div 
+          style={{ opacity: tint }}
+          className="absolute inset-0 bg-black z-20 pointer-events-none"
+        />
+
         <div className="relative h-[45%] w-full overflow-hidden">
           <Image
             src={service.image}
             alt={service.title}
             fill
+            sizes="(max-width: 768px) 90vw, 50vw"
             className="object-cover brightness-75 scale-110"
+            priority={false}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-carbon to-transparent opacity-60" />
-          <span className="absolute top-8 left-8 font-serif italic text-oro text-2xl">{service.roman}</span>
+          <span className="absolute top-8 left-8 font-serif italic text-oro text-2xl z-30">{service.roman}</span>
         </div>
         
-        <div className="p-10 flex flex-col justify-between flex-1 relative bg-carbon">
+        <div className="p-8 flex flex-col justify-between flex-1 relative bg-carbon z-10">
           <div className="space-y-6">
             <span className="font-sans text-[9px] uppercase tracking-[0.4em] text-oro/60">{service.tag}</span>
             <h3 className="font-serif text-4xl text-crema leading-[0.9] tracking-tighter italic">
               {service.title.split(' ')[0]} <br />
               <span className="not-italic font-light">{service.title.split(' ')[1] || ""}</span>
             </h3>
-            <p className="font-sans text-xs text-crema/40 leading-relaxed tracking-wide">
+            <p className="font-sans text-[11px] text-crema/40 leading-relaxed tracking-wide">
               {service.description}
             </p>
           </div>
 
-          <button className="flex items-center justify-between w-full pt-8 border-t border-crema/10 group">
+          <button className="flex items-center justify-between w-full pt-6 border-t border-crema/10 group active:scale-95 transition-transform">
             <div className="flex flex-col items-start">
               <span className="font-sans text-[8px] uppercase tracking-[0.3em] text-crema/30">Consultoría Privada</span>
               <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-oro font-bold">Contactar Concierge</span>
