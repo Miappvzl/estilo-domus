@@ -16,7 +16,7 @@ export default function FeaturedResidences() {
             <span className="italic">Redefinen el Estándar</span>
           </h2>
           
-          <div className="h-[1px] w-24 bg-bronze/40" />
+          <div className="h-px w-24 bg-bronze/40" />
         </div>
       </div>
 

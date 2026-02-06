@@ -55,7 +55,7 @@ export default function BespokeServices() {
       <div className="container mx-auto px-6 mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
         <div className="space-y-6">
           <div className="flex items-center gap-4">
-            <span className="h-[1px] w-12 bg-oro" />
+            <span className="h-px w-12 bg-oro" />
             <motion.span 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -68,7 +68,7 @@ export default function BespokeServices() {
             Bespoke <br /> <span className="italic font-light">Services</span>
           </h2>
         </div>
-        <p className="font-sans text-[11px] uppercase tracking-[0.2em] text-carbon/40 max-w-[280px] leading-relaxed border-l border-carbon/10 pl-8">
+        <p className="font-sans text-[11px] uppercase tracking-[0.2em] text-carbon/40 max-w-70 leading-relaxed border-l border-carbon/10 pl-8">
           Hospitalidad de siete estrellas diseñada para el individuo global que no acepta compromisos.
         </p>
       </div>
@@ -98,7 +98,7 @@ export default function BespokeServices() {
                     isHovered ? "scale-105 grayscale-0 brightness-[0.6]" : "scale-110 grayscale brightness-[0.3]"
                   }`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-carbon via-carbon/10 to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-linear-to-t from-carbon via-carbon/10 to-transparent opacity-80" />
               </motion.div>
 
               <div className="relative z-10 w-full space-y-6">
@@ -115,7 +115,7 @@ export default function BespokeServices() {
                   <span className={`font-sans text-[9px] uppercase tracking-[0.4em] block transition-all duration-500 ${isHovered ? "text-oro opacity-100" : "text-crema/40 opacity-0"}`}>
                     {service.tag}
                   </span>
-                  <h3 className={`font-serif text-crema leading-none transition-all duration-700 ${isHovered ? "text-6xl" : "text-2xl -rotate-90 origin-left translate-x-4 translate-y-[-100px]"}`}>
+                  <h3 className={`font-serif text-crema leading-none transition-all duration-700 ${isHovered ? "text-6xl" : "text-2xl -rotate-90 origin-left translate-x-4 -translate-y-25"}`}>
                     {service.title}
                   </h3>
                 </div>
@@ -133,7 +133,7 @@ export default function BespokeServices() {
                         {service.description}
                       </p>
                       <div className="flex gap-4">
-                        <div className="h-[1px] w-12 bg-oro self-center" />
+                        <div className="h-px w-12 bg-oro self-center" />
                         <span className="text-[9px] text-oro tracking-[0.3em] uppercase font-bold">Solicitar Dossier</span>
                       </div>
                     </motion.div>
@@ -177,7 +177,7 @@ function MobileCard({ service, index }: { service: any; index: number }) {
   const springScale = useSpring(scale, { stiffness: 60, damping: 20 });
 
   return (
-    <div ref={cardRef} className="h-[580px] flex flex-col sticky top-[12vh]">
+    <div ref={cardRef} className="h-145 flex flex-col sticky top-[12vh]">
       <motion.div 
         style={{ scale: springScale, opacity }}
         className="will-change-transform transform-gpu relative w-full h-full bg-carbon rounded-sm overflow-hidden shadow-2xl flex flex-col border border-crema/5"
@@ -197,7 +197,7 @@ function MobileCard({ service, index }: { service: any; index: number }) {
             className="object-cover brightness-75 scale-110"
             priority={false}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-carbon to-transparent opacity-60" />
+          <div className="absolute inset-0 bg-linear-to-t from-carbon to-transparent opacity-60" />
           <span className="absolute top-8 left-8 font-serif italic text-oro text-2xl z-30">{service.roman}</span>
         </div>
         

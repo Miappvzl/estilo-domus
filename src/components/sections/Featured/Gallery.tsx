@@ -71,7 +71,7 @@ function MobileCard({ prop, index, total }: { prop: any; index: number; total: n
       className="relative w-full space-y-6"
     >
       {/* Image Container with Parallax */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-carbon/5">
+      <div className="relative aspect-4/5 w-full overflow-hidden rounded-sm bg-carbon/5">
         <motion.div style={{ y: yImage }} className="absolute -inset-y-12 w-full h-[120%]">
           <Image
             src={prop.image}
@@ -101,7 +101,7 @@ function MobileCard({ prop, index, total }: { prop: any; index: number; total: n
         </p>
       </div>
 
-      <div className="h-[1px] w-full bg-carbon/10" />
+      <div className="h-px w-full bg-carbon/10" />
     </motion.div>
   );
 }
@@ -111,8 +111,8 @@ function MobileCard({ prop, index, total }: { prop: any; index: number; total: n
  */
 function DesktopCard({ prop }: { prop: any }) {
   return (
-    <motion.div className="relative shrink-0 w-[600px] group cursor-none">
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xs">
+    <motion.div className="relative shrink-0 w-150 group cursor-none">
+      <div className="relative aspect-4/3 w-full overflow-hidden rounded-xs">
         <Image
           src={prop.image}
           alt={prop.title}

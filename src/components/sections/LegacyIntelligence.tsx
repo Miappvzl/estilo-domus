@@ -134,7 +134,7 @@ export default function LegacyIntelligence() {
               pointerEvents: "none",
               zIndex: 50
             }}
-            className="hidden lg:block w-[400px] aspect-[4/3] overflow-hidden rounded-sm shadow-2xl"
+            className="hidden lg:block w-100 aspect-4/3 overflow-hidden rounded-sm shadow-2xl"
           >
             <motion.div 
               key={activeIndex}

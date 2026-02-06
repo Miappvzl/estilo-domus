@@ -99,7 +99,7 @@ export default function FluidBackground() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 w-screen h-[100dvh] -z-20 bg-[#F9F9F7] overflow-hidden pointer-events-none transform-gpu">
+    <div className="fixed inset-0 w-screen h-dvh -z-20 bg-[#F9F9F7] overflow-hidden pointer-events-none transform-gpu">
       <Suspense fallback={null}>
         <Canvas
           // 1. Optimización de Resolución (DPR)
@@ -125,7 +125,7 @@ export default function FluidBackground() {
       <div className="absolute inset-0 bg-[#F9F9F7]/10 backdrop-blur-[30px] md:backdrop-blur-[80px] transform-gpu will-change-[backdrop-filter]" />
       
       {/* Viñeta sutil para profundidad */}
-      <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-[#1A1A1A]/5 opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-carbon/5 opacity-20 pointer-events-none" />
     </div>
   );
 }

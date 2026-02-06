@@ -45,8 +45,8 @@ export default function Philosophy() {
             <div className="lg:sticky lg:top-40 space-y-12">
               
               {/* Progress Tracker */}
-              <div className="flex items-center gap-6">
-                <div className="h-[60px] w-[1px] bg-carbon/10 relative overflow-hidden">
+                <div className="flex items-center gap-6">
+                <div className="h-15 w-px bg-carbon/10 relative overflow-hidden">
                   <motion.div 
                     style={{ scaleY, originY: 0 }}
                     className="absolute inset-0 bg-oro w-full"
@@ -85,7 +85,7 @@ export default function Philosophy() {
               <ManifestoItem data={MANIFESTO[1]} />
               
               {/* Marco de Imagen de Prestigio */}
-              <div className="relative w-full aspect-[4/5] md:w-[110%] md:-ml-[10%] overflow-hidden transform-gpu shadow-2xl">
+              <div className="relative w-full aspect-4/5 md:w-[110%] md:-ml-[10%] overflow-hidden transform-gpu shadow-2xl">
                 <ParallaxImage 
                   src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000" 
                   alt="Interiorismo EstiloDomus"

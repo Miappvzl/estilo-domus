@@ -6,7 +6,7 @@ import heroBg from "@/assets/images/hero-bg.webp";
 export default function Hero() {
   return (
     <section 
-      className="relative h-[100dvh] w-full flex items-center justify-center overflow-hidden bg-carbon"
+      className="relative h-dvh w-full flex items-center justify-center overflow-hidden bg-carbon"
       style={{ clipPath: "polygon(0 0, 100% 0, 100% 95%, 0 100%)" }} // Estilo editorial sutil
     >
       {/* IMAGEN DE FONDO: LCP OPTIMIZED */}
@@ -43,7 +43,7 @@ export default function Hero() {
 
       {/* INDICADOR DE SCROLL (Opcional) */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
-        <div className="w-[1px] h-12 bg-linear-to-b from-crema/50 to-transparent" />
+        <div className="w-px h-12 bg-linear-to-b from-crema/50 to-transparent" />
       </div>
     </section>
   );

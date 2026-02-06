@@ -124,7 +124,7 @@ export default function PrivateVault() {
                 placeholder="EMAIL PROFESIONAL"
                 className="w-full bg-transparent border-b border-crema/20 py-4 font-sans text-xs tracking-widest text-crema outline-none focus:border-bronze transition-colors placeholder:text-crema/20"
               />
-              <div className="absolute bottom-0 left-0 h-[1px] bg-bronze w-0 group-focus-within:w-full transition-all duration-700" />
+              <div className="absolute bottom-0 left-0 h-px bg-bronze w-0 group-focus-within:w-full transition-all duration-700" />
             </div>
 
             <div className="flex justify-center">
@@ -146,7 +146,7 @@ export default function PrivateVault() {
       {!isMobile && (
         <motion.div 
           // CAMBIO 1: 'absolute' en lugar de 'fixed' para respetar coordenadas relativas
-          className="absolute top-0 left-0 w-8 h-8 border border-bronze rounded-full pointer-events-none z-[100] flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
+          className="absolute top-0 left-0 w-8 h-8 border border-bronze rounded-full pointer-events-none z-100 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
           style={{ 
             // CAMBIO 2: Usar 'left/top' para mover, evitando conflicto con translate
             left: smoothX, 

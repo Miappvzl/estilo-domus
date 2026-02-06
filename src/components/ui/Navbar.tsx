@@ -50,13 +50,13 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-[100001] transition-all duration-700 ease-[0.76, 0, 0.24, 1] ${
+      className={`fixed top-0 left-0 w-full z-100001 transition-all duration-700 ease-[0.76, 0, 0.24, 1] ${
         isScrolled && !isOpen
           ? "py-4"
           : "py-8"
       }`}
     >
-      <nav className="container mx-auto px-6 flex items-center justify-between relative z-[100002]">
+      <nav className="container mx-auto px-6 flex items-center justify-between relative z-100002">
         
         {/* LADO IZQUIERDO: LOGO & STATUS */}
         <div className="flex items-center gap-8">
@@ -102,7 +102,7 @@ export default function Navbar() {
                 </Link>
                 {/* Underline Animado de Elite */}
                 <motion.span 
-                  className="absolute -bottom-1 left-0 w-0 h-[1px] bg-oro transition-all duration-500 group-hover:w-full"
+                  className="absolute -bottom-1 left-0 w-0 h-px bg-oro transition-all duration-500 group-hover:w-full"
                 />
               </li>
             ))}
@@ -152,7 +152,7 @@ export default function Navbar() {
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 bg-[#F9F9F7] flex flex-col z-[100000] p-8"
+            className="fixed inset-0 bg-[#F9F9F7] flex flex-col z-100000 p-8"
           >
             <div className="mt-24 space-y-2">
               <span className="text-[10px] uppercase tracking-[0.4em] text-bronze ml-1">Menú Principal</span>
