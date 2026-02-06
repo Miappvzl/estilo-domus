@@ -3,13 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 
-const LUXURY_SPRING = { 
-  stiffness: 40,   // Movimiento más lento al inicio
-  damping: 20,    // Se detiene sin rebotar como un juguete
-  mass: 1.2       // Le da sensación de peso físico
-};
-
-
 export default function CustomCursor() {
   const [mounted, setMounted] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -19,8 +12,8 @@ export default function CustomCursor() {
   const mouseY = useMotionValue(-100);
 
   const springConfig = { damping: 25, stiffness: 250, mass: 0.5 };
-  const ringX = useSpring(mouseX, LUXURY_SPRING);
-  const ringY = useSpring(mouseY, LUXURY_SPRING);
+  const ringX = useSpring(mouseX, springConfig);
+  const ringY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
     setMounted(true);

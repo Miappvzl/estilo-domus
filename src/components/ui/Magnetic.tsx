@@ -8,13 +8,6 @@ interface MagneticProps {
   strength?: number; // Intensidad del imán
 }
 
-const LUXURY_SPRING = { 
-  stiffness: 40,   // Movimiento más lento al inicio
-  damping: 20,    // Se detiene sin rebotar como un juguete
-  mass: 1.2       // Le da sensación de peso físico
-};
-
-
 export default function Magnetic({ children, strength = 0.5 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -23,8 +16,8 @@ export default function Magnetic({ children, strength = 0.5 }: MagneticProps) {
   const y = useMotionValue(0);
 
   const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
-  const springX = useSpring(x, LUXURY_SPRING);
-  const springY = useSpring(y, LUXURY_SPRING);
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;

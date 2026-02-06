@@ -4,13 +4,6 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 import Image from "next/image";
 
-const LUXURY_SPRING = { 
-  stiffness: 40,   // Movimiento más lento al inicio
-  damping: 20,    // Se detiene sin rebotar como un juguete
-  mass: 1.2       // Le da sensación de peso físico
-};
-
-
 const MANIFESTO = [
   { 
     id: "01", 
@@ -40,9 +33,8 @@ export default function Philosophy() {
   });
 
   // Línea de progreso lateral que crece con el scroll
-  
-  const scaleY = useSpring(scrollYProgress, LUXURY_SPRING);
-  
+  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
   return (
     <section ref={sectionRef} className="relative bg-transparent py-32 md:py-64 px-6 lg:px-0">
       <div className="container mx-auto">
@@ -138,7 +130,7 @@ function ManifestoItem({ data }: { data: any }) {
 
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.15, 1, 0.15]);
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [60, 0, -60]);
-  const springY = useSpring(y, LUXURY_SPRING);
+  const springY = useSpring(y, { damping: 25, stiffness: 80 });
 
   return (
     <motion.div
@@ -178,8 +170,8 @@ function ParallaxImage({ src, alt }: { src: string; alt: string }) {
   const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
   const scale = useTransform(scrollYProgress, [0, 1], [1.2, 1]);
   
-  const smoothY = useSpring(y, LUXURY_SPRING);
-  const smoothScale = useSpring(scale, LUXURY_SPRING);
+  const smoothY = useSpring(y, { stiffness: 40, damping: 20 });
+  const smoothScale = useSpring(scale, { stiffness: 40, damping: 20 });
 
   return (
     <div ref={ref} className="relative w-full h-full overflow-hidden transform-gpu">

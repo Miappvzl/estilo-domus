@@ -45,12 +45,6 @@ const SERVICES = [
 ];
 
 const SPRING_CONFIG = { stiffness: 150, damping: 25, mass: 0.8 };
-const LUXURY_SPRING = { 
-  stiffness: 40,   // Movimiento más lento al inicio
-  damping: 20,    // Se detiene sin rebotar como un juguete
-  mass: 1.2       // Le da sensación de peso físico
-};
-
 
 export default function BespokeServices() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -87,7 +81,7 @@ export default function BespokeServices() {
             <motion.div
               key={service.id}
               layout
-              transition={LUXURY_SPRING}
+              transition={SPRING_CONFIG}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               className={`relative h-full border-r border-carbon/10 flex flex-col justify-end p-12 overflow-hidden cursor-none group ${
@@ -180,7 +174,7 @@ function MobileCard({ service, index }: { service: any; index: number }) {
   // Reemplazamos blur por una capa de sombra/oscuridad progresiva
   const tint = useTransform(scrollYProgress, [0, 1], [0, 0.4]);
 
-  const springScale = useSpring(scale, LUXURY_SPRING);
+  const springScale = useSpring(scale, { stiffness: 60, damping: 20 });
 
   return (
     <div ref={cardRef} className="h-[580px] flex flex-col sticky top-[12vh]">
