@@ -8,22 +8,35 @@ interface SmoothScrollProps {
 }
 
 /**
- * LENIS CONFIGURATION:
- * lerp: 0.08 - 0.1 (Balance perfecto entre peso y responsividad)
- * duration: 1.5 (Sensación de inercia de lujo)
+ * CONFIGURACIÓN DE SCROLL "HEAVY STONE"
+ * Objetivo: Máximo control, cero nerviosismo.
  */
 export default function SmoothScroll({ children }: SmoothScrollProps) {
   return (
-   <ReactLenis
-  root
-  options={{
-    duration: 1.0,  // Reducimos duración (de 1.2 a 1.0)
-    lerp: 0.12,     // Aumentamos el lerp para que sea más responsivo
-    smoothWheel: true,
-    syncTouch: true, // Esto es vital para que las animaciones de Framer Motion se sincronicen con el dedo
-    touchMultiplier: 1.8, // Hace que el scroll se sienta más rápido en móviles
-  }}
->
+    <ReactLenis
+      root
+      options={{
+        // 1. Duración del scroll (en segundos). 1.5 genera un movimiento pausado.
+        duration: 1.5, 
+        
+        // 2. Inercia (Lerp): 0.05 es el "punto dulce" del lujo. 
+        // Hace que la página se sienta pesada y cara.
+        lerp: 0.05, 
+        
+        // 3. Sensibilidad del ratón: Bajamos un poco para evitar saltos bruscos.
+        wheelMultiplier: 0.9, 
+        
+        // 4. Sensibilidad táctil: 1.2 es perfecto para que el dedo tenga 
+        // control total sin que la web "salga volando".
+        touchMultiplier: 1.2, 
+        
+        // 5. Suavizado activo
+        smoothWheel: true,
+
+        // Nota: 'normalizeWheel' ya no es necesario ni existe en esta versión.
+        // Lenis ahora lo gestiona internamente para evitar el lag de hardware.
+      }}
+    >
       {children}
     </ReactLenis>
   );
