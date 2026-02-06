@@ -4,6 +4,10 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import p1 from "@assets/images/p1.webp";
+import p2 from "@assets/images/p2.webp";
+import p3 from "@assets/images/p3.webp";
+import p4 from "@assets/images/p4.webp";
 
 const SERVICES = [
   {
@@ -12,7 +16,7 @@ const SERVICES = [
     title: "Global Citizenship",
     tag: "RESIDENCIA & ESTRUCTURA",
     description: "Gestión integral de Golden Visa y estructuras fiscales internacionales para su movilidad global.",
-    image: "https://images.unsplash.com/photo-1554469384-e58fac16e23a?q=80&w=1000",
+    image: p1,
   },
   {
     id: "02",
@@ -20,7 +24,7 @@ const SERVICES = [
     title: "Asset Management",
     tag: "INVERSIÓN ESTRATÉGICA",
     description: "Maximización de ROI y mantenimiento preventivo de activos mediante análisis predictivo.",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000",
+    image: p2,
   },
   {
     id: "03",
@@ -28,7 +32,7 @@ const SERVICES = [
     title: "Art & Curating",
     tag: "PATRIMONIO CULTURAL",
     description: "Interiorismo y adquisición estratégica de obras de arte para elevar el valor de su patrimonio.",
-    image: "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=1000",
+    image: p3,
   },
   {
     id: "04",
@@ -36,11 +40,17 @@ const SERVICES = [
     title: "Private Concierge",
     tag: "LIFESTYLE MANAGEMENT",
     description: "Relocation, aviación privada y acceso preferencial a los clubes más exclusivos del mundo.",
-    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1000",
+    image: p4,
   },
 ];
 
 const SPRING_CONFIG = { stiffness: 150, damping: 25, mass: 0.8 };
+const LUXURY_SPRING = { 
+  stiffness: 40,   // Movimiento más lento al inicio
+  damping: 20,    // Se detiene sin rebotar como un juguete
+  mass: 1.2       // Le da sensación de peso físico
+};
+
 
 export default function BespokeServices() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -77,7 +87,7 @@ export default function BespokeServices() {
             <motion.div
               key={service.id}
               layout
-              transition={SPRING_CONFIG}
+              transition={LUXURY_SPRING}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               className={`relative h-full border-r border-carbon/10 flex flex-col justify-end p-12 overflow-hidden cursor-none group ${
@@ -142,11 +152,11 @@ export default function BespokeServices() {
       </div>
 
       {/* --- MOBILE: THE VAULT STACK --- */}
-      <div className="lg:hidden flex flex-col px-6 space-y-[40vh] pb-[30vh]">
-        {SERVICES.map((service, index) => (
-          <MobileCard key={service.id} service={service} index={index} />
-        ))}
-      </div>
+      <div className="lg:hidden flex flex-col px-6 space-y-[60vh] pb-[40vh]">
+  {SERVICES.map((service, index) => (
+    <MobileCard key={service.id} service={service} index={index} />
+  ))}
+</div>
     </section>
   );
 }
@@ -170,7 +180,7 @@ function MobileCard({ service, index }: { service: any; index: number }) {
   // Reemplazamos blur por una capa de sombra/oscuridad progresiva
   const tint = useTransform(scrollYProgress, [0, 1], [0, 0.4]);
 
-  const springScale = useSpring(scale, { stiffness: 60, damping: 20 });
+  const springScale = useSpring(scale, LUXURY_SPRING);
 
   return (
     <div ref={cardRef} className="h-[580px] flex flex-col sticky top-[12vh]">

@@ -26,6 +26,8 @@
     background-color: transparent;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    overscroll-behavior-y: none; 
+
   }
 
   html::-webkit-scrollbar {

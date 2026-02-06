@@ -6,6 +6,13 @@ import Image from "next/image";
 import { Lock, ArrowRight } from "lucide-react";
 import Magnetic from "@/components/ui/Magnetic";
 
+const LUXURY_SPRING = { 
+  stiffness: 40,   // Movimiento más lento al inicio
+  damping: 20,    // Se detiene sin rebotar como un juguete
+  mass: 1.2       // Le da sensación de peso físico
+};
+
+
 export default function PrivateVault() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -16,8 +23,8 @@ export default function PrivateVault() {
 
   // Suavizado del movimiento
   const springConfig = { damping: 30, stiffness: 200, mass: 0.5 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
+  const smoothX = useSpring(mouseX, LUXURY_SPRING);
+  const smoothY = useSpring(mouseY, LUXURY_SPRING);
 
   // 2. Transformación de la Máscara
   const maskImage = useTransform(

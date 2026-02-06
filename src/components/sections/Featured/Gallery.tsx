@@ -4,6 +4,13 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 import Image from "next/image";
 
+const LUXURY_SPRING = { 
+  stiffness: 40,   // Movimiento más lento al inicio
+  damping: 20,    // Se detiene sin rebotar como un juguete
+  mass: 1.2       // Le da sensación de peso físico
+};
+
+
 const PROPERTIES = [
   { id: "01", title: "Vivienda Atemporal", location: "Costa Brava, España", price: "4.200.000 €", image: "https://images.unsplash.com/photo-1758448756084-c44d73014c07?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fE1vZGVybiUyMGxpdmluZyUyMHJvb20lMjB3b29kJTIwZmxvb3J8ZW58MHx8MHx8fDA%3D" },
   { id: "02", title: "Residencia L'Aube", location: "Provence, Francia", price: "3.850.000 €", image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000" },
@@ -61,7 +68,7 @@ function MobileCard({ prop, index, total }: { prop: any; index: number; total: n
   const yImage = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
   // 4. Suavizado de movimiento
-  const springScale = useSpring(scale, { stiffness: 100, damping: 30 });
+  const springScale = useSpring(scale, LUXURY_SPRING);
 
   return (
     <motion.div
