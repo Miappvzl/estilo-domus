@@ -6,142 +6,117 @@ import Image from "next/image";
 
 const CHAPTERS = [
   {
-    tag: "01 / LA VISIÓN",
-    title: "Arquitectura Cinética",
-    description: "Diseñamos espacios que no solo habitan el paisaje, sino que lo desafían. Cada ángulo es una respuesta a la luz natural y al movimiento del sol.",
+    roman: "I",
+    title: "LA VISIÓN",
+    text: "Arquitectura que desafía el paso del tiempo.",
+    desc: "Diseñamos espacios que no solo habitan el paisaje, sino que lo trascienden, convirtiéndose en monumentos de vida."
   },
   {
-    tag: "02 / LA MATERIA",
-    title: "Honestidad Táctil",
-    description: "Piedra volcánica, maderas recuperadas y lino puro. Creemos en la belleza de lo imperfecto y en materiales que envejecen con dignidad.",
+    roman: "II",
+    title: "LA MATERIA",
+    text: "Honestidad en cada poro de la piedra.",
+    desc: "Creemos en la verdad de los materiales. Piedra volcánica, maderas centenarias y luz que esculpe cada rincón."
   },
   {
-    tag: "03 / EL LEGADO",
-    title: "Refugios Eternos",
-    description: "No construimos para el presente, sino para las generaciones que vendrán. Una propiedad de EstiloDomus es un testamento de éxito y paz.",
+    roman: "III",
+    title: "EL LEGADO",
+    text: "Refugios para almas en busca de paz.",
+    desc: "No construimos para el ahora, sino para las generaciones que entenderán el verdadero valor del silencio."
   }
-];
-
-const BACKGROUND_TEXT = [
-  "TIMELESS ARCHITECTURE •",
-  "LEGACY • INTEGRITY • VISION •",
-  "THE ART OF SILENCE •"
 ];
 
 export default function Philosophy() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Aumentamos el rango de scroll para que dure más (400vh)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  // Movimiento horizontal de los textos de fondo
-  const xLeft = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const xRight = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
-
-  // Animaciones de la imagen escultórica
-  const imgY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1.1, 0.9]);
-  const smoothImgScale = useSpring(imgScale, { stiffness: 50, damping: 20 });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
 
   return (
     <section 
       ref={containerRef} 
-      className="relative bg-transparent min-h-[450vh]" // Mucho más espacio de scroll
+      className="relative bg-carbon min-h-[400vh] overflow-visible"
+      style={{
+        // TRUCO DE PRESTIGIO: Desvanecemos la sección al inicio y al final 
+        // para que se funda con el fondo líquido crema del resto de la web.
+        maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
+      }}
     >
-      {/* ESPACIADOR: Separación del Hero (Despegue visual) */}
-      <div className="h-[30vh] md:h-[50vh] w-full" />
+      <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden">
+        <div className="container mx-auto px-6 md:px-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            
+            {/* LADO IZQUIERDO: Imagen Monolítica con Parallax */}
+            <div className="hidden lg:block relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-xs group">
+              <ParallaxImage progress={smoothProgress} />
+              <div className="absolute inset-0 border border-white/5 pointer-events-none" />
+            </div>
 
-      {/* 1. KINETIC TEXT BACKGROUND (Sticky) */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center pointer-events-none select-none overflow-hidden z-0">
-        <motion.div style={{ x: xLeft }} className="whitespace-nowrap flex opacity-[0.04] md:opacity-[0.03]">
-          {Array(3).fill(BACKGROUND_TEXT[0]).map((t, i) => (
-            <span key={i} className="text-[28vw] md:text-[18vw] font-serif font-black leading-none uppercase tracking-tighter">{t}&nbsp;</span>
-          ))}
-        </motion.div>
-        <motion.div style={{ x: xRight }} className="whitespace-nowrap flex opacity-[0.06] md:opacity-[0.05] -mt-[8vw]">
-          {Array(3).fill(BACKGROUND_TEXT[1]).map((t, i) => (
-            <span key={i} className="text-[28vw] md:text-[18vw] font-serif italic font-light leading-none text-oro tracking-tighter">{t}&nbsp;</span>
-          ))}
-        </motion.div>
-        <motion.div style={{ x: xLeft }} className="whitespace-nowrap flex opacity-[0.04] md:opacity-[0.03] -mt-[8vw]">
-          {Array(3).fill(BACKGROUND_TEXT[2]).map((t, i) => (
-            <span key={i} className="text-[28vw] md:text-[18vw] font-serif font-black leading-none uppercase tracking-tighter">{t}&nbsp;</span>
-          ))}
-        </motion.div>
+            {/* LADO DERECHO: Texto Cinético (Foco Único) */}
+            <div className="relative h-[60vh] flex flex-col justify-center">
+              {CHAPTERS.map((chapter, index) => (
+                <ChapterText 
+                  key={index} 
+                  chapter={chapter} 
+                  index={index} 
+                  progress={smoothProgress} 
+                />
+              ))}
+            </div>
+
+          </div>
+        </div>
       </div>
-
-      {/* 2. NARRATIVA EDITORIAL (Staggered Content) */}
-      <div className="relative z-10 -mt-[100vh] container mx-auto px-6">
-        
-        {/* CHAPTER 1 */}
-        <div className="min-h-screen flex items-center py-32">
-          <div className="max-w-4xl">
-            <ContentBlock chapter={CHAPTERS[0]} index={1} />
-          </div>
-        </div>
-
-        {/* CHAPTER 2: Con Imagen Escultórica */}
-        <div className="min-h-[150vh] grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-32">
-          <div className="lg:col-span-6">
-            <ContentBlock chapter={CHAPTERS[1]} index={2} />
-          </div>
-          <div className="lg:col-span-6">
-            <motion.div 
-              style={{ scale: smoothImgScale, y: imgY }}
-              className="relative aspect-3/4 w-full max-w-md mx-auto overflow-hidden rounded-sm shadow-2xl transform-gpu"
-            >
-              <Image 
-                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000" 
-                alt="Filosofía Material EstiloDomus"
-                fill
-                className="object-cover grayscale"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-carbon/60 via-transparent to-transparent" />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* CHAPTER 3 */}
-        <div className="min-h-screen flex items-center justify-end py-32 text-right">
-          <div className="max-w-2xl">
-            <ContentBlock chapter={CHAPTERS[2]} index={3} isRight />
-          </div>
-        </div>
-
-      </div>
-
-      {/* CIERRE DE SECCIÓN: Despegue hacia la siguiente sección */}
-      <div className="h-[20vh] w-full" />
     </section>
   );
 }
 
-function ContentBlock({ chapter, index, isRight = false }: { chapter: any, index: number, isRight?: boolean }) {
+function ChapterText({ chapter, index, progress }: { chapter: any, index: number, progress: any }) {
+  // Cada capítulo vive en un rango del scroll (0.2 a 0.4, 0.4 a 0.6, etc.)
+  const start = 0.2 + index * 0.25;
+  const end = start + 0.2;
+
+  const opacity = useTransform(progress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
+  const y = useTransform(progress, [start, end], [40, -40]);
+
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, margin: "-20%" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-      className={`space-y-8 ${isRight ? 'flex flex-col items-end' : ''}`}
+    <motion.div
+      style={{ opacity, y }}
+      className="absolute inset-0 flex flex-col justify-center space-y-8 pointer-events-none"
     >
-      <div className="flex items-center gap-4">
-        <span className="text-oro font-serif italic text-2xl">0{index}</span>
-        <div className="h-px w-12 bg-oro/30" />
-        <span className="font-sans text-[10px] uppercase tracking-[0.5em] text-carbon/40">{chapter.tag}</span>
+      <div className="flex items-center gap-6">
+        <span className="font-serif italic text-oro text-4xl">{chapter.roman}</span>
+        <div className="h-px w-12 bg-oro/40" />
+        <span className="font-sans text-[10px] uppercase tracking-[0.6em] text-crema/40">{chapter.title}</span>
       </div>
-      
-      <h3 className="font-serif text-5xl md:text-8xl text-carbon leading-[0.85] tracking-tighter max-w-lg">
-        {chapter.title.split(' ')[0]} <br />
-        <span className="italic font-light">{chapter.title.split(' ')[1]}</span>
+
+      <h3 className="font-serif text-5xl md:text-7xl text-crema leading-[0.9] tracking-tighter uppercase">
+        {chapter.text}
       </h3>
-      
-      <p className="font-sans text-sm md:text-base uppercase tracking-widest text-carbon/60 leading-relaxed max-w-sm">
-        {chapter.description}
+
+      <p className="font-sans text-xs md:text-sm text-crema/40 uppercase tracking-[0.2em] leading-relaxed max-w-sm pt-8 border-t border-white/5">
+        {chapter.desc}
       </p>
+    </motion.div>
+  );
+}
+
+function ParallaxImage({ progress }: { progress: any }) {
+  // La imagen se mueve verticalmente dentro de su contenedor fijo
+  const y = useTransform(progress, [0, 1], ["-15%", "15%"]);
+  const scale = useTransform(progress, [0, 1], [1.2, 1]);
+
+  return (
+    <motion.div style={{ y, scale }} className="absolute -inset-y-20 w-full h-[140%]">
+      <Image 
+        src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000" 
+        alt="Interior de Lujo EstiloDomus"
+        fill
+        className="object-cover brightness-75 grayscale contrast-125"
+      />
     </motion.div>
   );
 }

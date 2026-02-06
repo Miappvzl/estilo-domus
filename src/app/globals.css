@@ -88,6 +88,10 @@
   pointer-events: none !important;
 }
 
+h3 {
+  letter-spacing: -0.05em; /* Títulos apretados = Look Editorial Moderno */
+}
+
 @layer utilities {
   .gpu-layer {
     transform: translateZ(0);
