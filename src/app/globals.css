@@ -55,6 +55,9 @@
   mix-blend-mode: soft-light; 
   opacity: 1; /* Al usar soft-light, podemos subir un poco la opacidad */
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.80' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+   @media (max-width: 768px) {
+    opacity: 0.02;
+  }
   
 }
 }
@@ -97,4 +100,8 @@
   .bg-glass {
     @apply bg-transparent backdrop-blur-[2px];
   }
+}
+
+section {
+  contain: paint;
 }

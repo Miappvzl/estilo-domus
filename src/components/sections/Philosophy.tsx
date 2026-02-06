@@ -1,191 +1,147 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useInView,
-} from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 
-const MANIFESTO = [
+const CHAPTERS = [
   {
-    id: "01",
-    roman: "I",
-    tag: "TEMPORALIDAD",
-    text: "Creemos que la arquitectura es la forma más pura de capturar el tiempo. No construimos espacios, sino refugios para el legado.",
+    tag: "01 / LA VISIÓN",
+    title: "Arquitectura Cinética",
+    description: "Diseñamos espacios que no solo habitan el paisaje, sino que lo desafían. Cada ángulo es una respuesta a la luz natural y al movimiento del sol.",
   },
   {
-    id: "02",
-    roman: "II",
-    tag: "HONESTIDAD",
-    text: "Nuestra selección es una oda a la honestidad material. Piedra volcánica, maderas centenarias y luz natural que esculpe cada rincón.",
+    tag: "02 / LA MATERIA",
+    title: "Honestidad Táctil",
+    description: "Piedra volcánica, maderas recuperadas y lino puro. Creemos en la belleza de lo imperfecto y en materiales que envejecen con dignidad.",
   },
   {
-    id: "03",
-    roman: "III",
-    tag: "ESENCIA",
-    text: "La verdadera exclusividad es la paz. Es la capacidad de desconectar del ruido para conectar con la esencia de uno mismo.",
-  },
+    tag: "03 / EL LEGADO",
+    title: "Refugios Eternos",
+    description: "No construimos para el presente, sino para las generaciones que vendrán. Una propiedad de EstiloDomus es un testamento de éxito y paz.",
+  }
+];
+
+const BACKGROUND_TEXT = [
+  "TIMELESS ARCHITECTURE •",
+  "LEGACY • INTEGRITY • VISION •",
+  "THE ART OF SILENCE •"
 ];
 
 export default function Philosophy() {
-  const sectionRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Aumentamos el rango de scroll para que dure más (400vh)
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: containerRef,
     offset: ["start end", "end start"],
   });
-  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  // Movimiento horizontal de los textos de fondo
+  const xLeft = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const xRight = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
+
+  // Animaciones de la imagen escultórica
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1.1, 0.9]);
+  const smoothImgScale = useSpring(imgScale, { stiffness: 50, damping: 20 });
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-transparent py-32 md:py-64 px-6 lg:px-0"
+    <section 
+      ref={containerRef} 
+      className="relative bg-transparent min-h-[450vh]" // Mucho más espacio de scroll
     >
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
-          <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-40 space-y-12">
-              <div className="flex items-center gap-6">
-                <div className="h-15 w-px bg-carbon/10 relative overflow-hidden">
-                  <motion.div
-                    style={{ scaleY, originY: 0 }}
-                    className="absolute inset-0 bg-oro w-full shadow-[0_0_10px_#C5B358]"
-                  />
-                </div>
-                <div className="font-sans text-[10px] uppercase tracking-[0.4em] text-carbon/40 leading-relaxed">
-                  EstiloDomus <br />{" "}
-                  <span className="text-oro font-bold">Manifesto 2026</span>
-                </div>
-              </div>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="space-y-6"
-              >
-                <h2 className="font-serif text-7xl md:text-8xl lg:text-9xl text-carbon leading-[0.8] tracking-tighter">
-                  El Arte de <br />{" "}
-                  <span className="italic font-light">Vivir</span> <br />{" "}
-                  <span className="italic text-oro pl-12 md:pl-20">
-                    Sin Prisa
-                  </span>
-                </h2>
-                <p className="font-sans text-[11px] uppercase tracking-[0.2em] text-carbon/50 max-w-xs leading-relaxed border-l border-oro/20 pl-6">
-                  Una curaduría de principios que rigen cada propiedad en
-                  nuestra colección privada.
-                </p>
-              </motion.div>
-            </div>
+      {/* ESPACIADOR: Separación del Hero (Despegue visual) */}
+      <div className="h-[30vh] md:h-[50vh] w-full" />
+
+      {/* 1. KINETIC TEXT BACKGROUND (Sticky) */}
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-center pointer-events-none select-none overflow-hidden z-0">
+        <motion.div style={{ x: xLeft }} className="whitespace-nowrap flex opacity-[0.04] md:opacity-[0.03]">
+          {Array(3).fill(BACKGROUND_TEXT[0]).map((t, i) => (
+            <span key={i} className="text-[28vw] md:text-[18vw] font-serif font-black leading-none uppercase tracking-tighter">{t}&nbsp;</span>
+          ))}
+        </motion.div>
+        <motion.div style={{ x: xRight }} className="whitespace-nowrap flex opacity-[0.06] md:opacity-[0.05] -mt-[8vw]">
+          {Array(3).fill(BACKGROUND_TEXT[1]).map((t, i) => (
+            <span key={i} className="text-[28vw] md:text-[18vw] font-serif italic font-light leading-none text-oro tracking-tighter">{t}&nbsp;</span>
+          ))}
+        </motion.div>
+        <motion.div style={{ x: xLeft }} className="whitespace-nowrap flex opacity-[0.04] md:opacity-[0.03] -mt-[8vw]">
+          {Array(3).fill(BACKGROUND_TEXT[2]).map((t, i) => (
+            <span key={i} className="text-[28vw] md:text-[18vw] font-serif font-black leading-none uppercase tracking-tighter">{t}&nbsp;</span>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* 2. NARRATIVA EDITORIAL (Staggered Content) */}
+      <div className="relative z-10 -mt-[100vh] container mx-auto px-6">
+        
+        {/* CHAPTER 1 */}
+        <div className="min-h-screen flex items-center py-32">
+          <div className="max-w-4xl">
+            <ContentBlock chapter={CHAPTERS[0]} index={1} />
           </div>
-          <div className="lg:col-span-7 space-y-48 md:space-y-96">
-            <ManifestoItem data={MANIFESTO[0]} />
-            <div className="space-y-48 md:space-y-64">
-              <ManifestoItem data={MANIFESTO[1]} />
-              <div className="relative w-full aspect-4/5 md:w-100% md:-ml-[3%] overflow-hidden transform-gpu shadow-2xl rounded-sm">
-                <ParallaxImage
-                  src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000"
-                  alt="Interiorismo EstiloDomus"
-                />
-                <div className="absolute bottom-8 left-9 text-crema z-10 font-sans text-[9px] uppercase tracking-[0.4em] opacity-80 backdrop-blur-sm bg-black/10 px-4 py-2 border border-white/10">
-                  Residencia Alabastro • Caracas, VE
-                </div>
-              </div>
-            </div>
-            <ManifestoItem data={MANIFESTO[2]} />
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="pt-24 border-t border-carbon/10 flex justify-between items-end grayscale hover:grayscale-0 transition-all duration-1000"
+        </div>
+
+        {/* CHAPTER 2: Con Imagen Escultórica */}
+        <div className="min-h-[150vh] grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-32">
+          <div className="lg:col-span-6">
+            <ContentBlock chapter={CHAPTERS[1]} index={2} />
+          </div>
+          <div className="lg:col-span-6">
+            <motion.div 
+              style={{ scale: smoothImgScale, y: imgY }}
+              className="relative aspect-3/4 w-full max-w-md mx-auto overflow-hidden rounded-sm shadow-2xl transform-gpu"
             >
-              <div className="font-serif italic text-4xl text-carbon/20 tracking-tighter">
-                Domus Essence
-              </div>
-              <div className="text-[9px] font-sans tracking-[0.3em] text-carbon/40 uppercase font-bold">
-                © Caracas MMXXVI
-              </div>
+              <Image 
+                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000" 
+                alt="Filosofía Material EstiloDomus"
+                fill
+                className="object-cover grayscale"
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-carbon/60 via-transparent to-transparent" />
             </motion.div>
           </div>
         </div>
+
+        {/* CHAPTER 3 */}
+        <div className="min-h-screen flex items-center justify-end py-32 text-right">
+          <div className="max-w-2xl">
+            <ContentBlock chapter={CHAPTERS[2]} index={3} isRight />
+          </div>
+        </div>
+
       </div>
+
+      {/* CIERRE DE SECCIÓN: Despegue hacia la siguiente sección */}
+      <div className="h-[20vh] w-full" />
     </section>
   );
 }
 
-function ManifestoItem({ data }: { data: any }) {
-  const container = useRef(null);
-  const isInView = useInView(container, { margin: "-20% 0px -20% 0px" });
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ["start end", "center center", "end start"],
-  });
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 1, 0.1]);
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -100]);
-  const springY = useSpring(y, { damping: 30, stiffness: 70 });
-
+function ContentBlock({ chapter, index, isRight = false }: { chapter: any, index: number, isRight?: boolean }) {
   return (
-    <motion.div
-      ref={container}
-      style={{ opacity, y: springY }}
-      className="relative pl-12 md:pl-24 will-change-transform transform-gpu"
+    <motion.div 
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, margin: "-20%" }}
+      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+      className={`space-y-8 ${isRight ? 'flex flex-col items-end' : ''}`}
     >
-      <motion.span
-        animate={{ opacity: isInView ? 0.3 : 0.05, x: isInView ? 0 : -20 }}
-        className="absolute left-0 top-0 font-serif italic text-oro text-4xl md:text-6xl select-none"
-      >
-        {data.roman}
-      </motion.span>
-      <div className="space-y-8">
-        <motion.span
-          animate={{
-            letterSpacing: isInView ? "0.6em" : "0.3em",
-            color: isInView ? "#A67C52" : "#1A1A1A",
-          }}
-          className="font-sans text-[10px] uppercase text-carbon block transition-all duration-1000"
-        >
-          {data.tag}
-        </motion.span>
-        <p className="font-serif text-4xl md:text-6xl lg:text-7xl text-carbon leading-[1.05] tracking-tight max-w-2xl">
-          {data.text}
-        </p>
+      <div className="flex items-center gap-4">
+        <span className="text-oro font-serif italic text-2xl">0{index}</span>
+        <div className="h-px w-12 bg-oro/30" />
+        <span className="font-sans text-[10px] uppercase tracking-[0.5em] text-carbon/40">{chapter.tag}</span>
       </div>
+      
+      <h3 className="font-serif text-5xl md:text-8xl text-carbon leading-[0.85] tracking-tighter max-w-lg">
+        {chapter.title.split(' ')[0]} <br />
+        <span className="italic font-light">{chapter.title.split(' ')[1]}</span>
+      </h3>
+      
+      <p className="font-sans text-sm md:text-base uppercase tracking-widest text-carbon/60 leading-relaxed max-w-sm">
+        {chapter.description}
+      </p>
     </motion.div>
-  );
-}
-
-function ParallaxImage({ src, alt }: { src: string; alt: string }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1.3, 1]);
-  const smoothY = useSpring(y, { stiffness: 30, damping: 20 });
-  const smoothScale = useSpring(scale, { stiffness: 30, damping: 20 });
-
-  return (
-    <div
-      ref={ref}
-      className="relative w-full h-full overflow-hidden transform-gpu"
-    >
-      <motion.div
-        style={{ y: smoothY, scale: smoothScale }}
-        className="absolute -inset-y-32 w-full h-[160%] will-change-transform"
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          priority={false}
-          className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-        <div className="absolute inset-0 bg-oro/5 mix-blend-overlay" />
-      </motion.div>
-    </div>
   );
 }
