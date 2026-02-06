@@ -182,7 +182,7 @@ function MobileCard({ service, index }: { service: any; index: number }) {
         <div className="p-10 flex flex-col justify-between flex-1 relative bg-carbon">
           <div className="space-y-6">
             <span className="font-sans text-[9px] uppercase tracking-[0.4em] text-oro/60">{service.tag}</span>
-            <h3 className="font-serif text-5xl text-crema leading-[0.9] tracking-tighter italic">
+            <h3 className="font-serif text-4xl text-crema leading-[0.9] tracking-tighter italic">
               {service.title.split(' ')[0]} <br />
               <span className="not-italic font-light">{service.title.split(' ')[1] || ""}</span>
             </h3>
