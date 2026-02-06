@@ -122,7 +122,7 @@ export default function FluidBackground() {
           Subimos el blur a un nivel medio (30-60) para la "sustancia",
           pero lo mantenemos optimizado con transform-gpu.
       */}
-      <div className="absolute inset-0 bg-[#F9F9F7]/10 backdrop-blur-[25px] md:backdrop-blur-[30px] transform-gpu will-change-[backdrop-filter]" />
+      <div className="absolute inset-0 bg-[#F9F9F7]/10 backdrop-blur-[30px] md:backdrop-blur-[80px] transform-gpu will-change-[backdrop-filter]" />
       
       {/* Viñeta sutil para profundidad */}
       <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-[#1A1A1A]/5 opacity-20 pointer-events-none" />
