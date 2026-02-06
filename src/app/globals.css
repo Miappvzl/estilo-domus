@@ -4,7 +4,7 @@
   /* Paleta Old Money */
   --color-crema: #F5F5F0;
   --color-carbon: #1A1A1A;
-  --color-bronze: #A67C52;
+  --color-bronze: #f5f5f0;
   --color-oro: #C5B358;
 
   /* Tipografías Variables */
@@ -18,7 +18,7 @@
 @layer base {
   :root {
     --bg-crema: #F5F5F0;
-    --text-carbon: #1A1A1A;
+    --text-carbon: #000000;
   }
 
   html {
