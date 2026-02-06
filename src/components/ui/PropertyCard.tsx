@@ -82,9 +82,7 @@ export default function PropertyCard({ property, index, isLarge = false }: Prope
             <span className="text-crema text-xl font-light italic font-serif">
               {property.price}
             </span>
-            <span className="text-oro text-[10px] uppercase tracking-widest border-b border-oro/0 group-hover:border-oro/100 transition-all duration-500">
-              Ver Detalles
-            </span>
+            <span className="text-oro text-[10px] uppercase tracking-widest border-b border-oro/0 group-hover:border-oro transition-all duration-500"></span>
           </div>
         </motion.div>
       </div>

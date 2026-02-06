@@ -10,131 +10,55 @@ import p3 from "@assets/images/p3.webp";
 import p4 from "@assets/images/p4.webp";
 
 const SERVICES = [
-  {
-    id: "01",
-    roman: "I",
-    title: "Global Citizenship",
-    tag: "RESIDENCIA & ESTRUCTURA",
-    description: "Gestión integral de Golden Visa y estructuras fiscales internacionales para su movilidad global.",
-    image: p1,
-  },
-  {
-    id: "02",
-    roman: "II",
-    title: "Asset Management",
-    tag: "INVERSIÓN ESTRATÉGICA",
-    description: "Maximización de ROI y mantenimiento preventivo de activos mediante análisis predictivo.",
-    image: p2,
-  },
-  {
-    id: "03",
-    roman: "III",
-    title: "Art & Curating",
-    tag: "PATRIMONIO CULTURAL",
-    description: "Interiorismo y adquisición estratégica de obras de arte para elevar el valor de su patrimonio.",
-    image: p3,
-  },
-  {
-    id: "04",
-    roman: "IV",
-    title: "Private Concierge",
-    tag: "LIFESTYLE MANAGEMENT",
-    description: "Relocation, aviación privada y acceso preferencial a los clubes más exclusivos del mundo.",
-    image: p4,
-  },
+  { id: "01", roman: "I", title: "Global Citizenship", tag: "RESIDENCIA & ESTRUCTURA", description: "Gestión integral de Golden Visa y estructuras fiscales internacionales.", image: p1 },
+  { id: "02", roman: "II", title: "Asset Management", tag: "INVERSIÓN ESTRATÉGICA", description: "Maximización de ROI mediante análisis predictivo y mantenimiento premium.", image: p2 },
+  { id: "03", roman: "III", title: "Art & Curating", tag: "PATRIMONIO CULTURAL", description: "Interiorismo y adquisición estratégica de obras de arte de alto valor.", image: p3 },
+  { id: "04", roman: "IV", title: "Private Concierge", tag: "LIFESTYLE MANAGEMENT", description: "Relocation, aviación privada y acceso preferencial a clubes exclusivos.", image: p4 },
 ];
-
-const SPRING_CONFIG = { stiffness: 150, damping: 25, mass: 0.8 };
 
 export default function BespokeServices() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <section className="relative w-full bg-transparent py-32 md:py-64 overflow-hidden">
-      {/* HEADER SECTION */}
-      <div className="container mx-auto px-6 mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
-        <div className="space-y-6">
+      <div className="container mx-auto px-6 mb-24 flex flex-col md:flex-row md:items-end justify-between gap-12">
+        <div className="space-y-8">
           <div className="flex items-center gap-4">
-            <span className="h-px w-12 bg-oro" />
-            <motion.span 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="font-sans text-[10px] uppercase tracking-[0.5em] text-bronze"
-            >
-              Exclusividad 360°
-            </motion.span>
+            <span className="h-px w-16 bg-oro" />
+            <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="font-sans text-[10px] uppercase tracking-[0.6em] text-bronze font-bold">Exclusividad 360°</motion.span>
           </div>
-          <h2 className="font-serif text-6xl md:text-8xl text-carbon leading-[0.85] tracking-tighter">
-            Bespoke <br /> <span className="italic font-light">Services</span>
-          </h2>
+          <h2 className="font-serif text-7xl md:text-9xl text-carbon leading-[0.8] tracking-tighter">Bespoke <br /> <span className="italic font-light">Services</span></h2>
         </div>
-        <p className="font-sans text-[11px] uppercase tracking-[0.2em] text-carbon/40 max-w-70 leading-relaxed border-l border-carbon/10 pl-8">
-          Hospitalidad de siete estrellas diseñada para el individuo global que no acepta compromisos.
+        <p className="font-sans text-[11px] uppercase tracking-[0.3em] text-carbon/40 max-w-70 leading-relaxed border-l border-carbon/10 pl-8 italic">
+          Hospitalidad de siete estrellas para el individuo global.
         </p>
       </div>
 
-      {/* --- DESKTOP: THE SHUTTER REVEAL --- */}
-      <div className="hidden lg:flex w-full h-[75vh] border-y border-carbon/10 bg-transparent overflow-hidden">
+      <div className="hidden lg:flex w-full h-[80vh] border-y border-carbon/10 bg-transparent overflow-hidden">
         {SERVICES.map((service, index) => {
           const isHovered = hoveredIndex === index;
           return (
-            <motion.div
-              key={service.id}
-              layout
-              transition={SPRING_CONFIG}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className={`relative h-full border-r border-carbon/10 flex flex-col justify-end p-12 overflow-hidden cursor-none group ${
-                isHovered ? "flex-[3.5]" : "flex-1"
-              }`}
-            >
+            <motion.div key={service.id} layout transition={{ type: "spring", stiffness: 120, damping: 20, mass: 1 }} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} className={`relative h-full border-r border-carbon/10 flex flex-col justify-end p-16 overflow-hidden cursor-none group ${isHovered ? "flex-4" : "flex-1"}`}>
               <motion.div layout className="absolute inset-0 z-0">
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  fill
-                  sizes="(max-width: 1200px) 25vw, 40vw"
-                  className={`object-cover transition-all duration-1000 ease-[0.76, 0, 0.24, 1] ${
-                    isHovered ? "scale-105 grayscale-0 brightness-[0.6]" : "scale-110 grayscale brightness-[0.3]"
-                  }`}
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-carbon via-carbon/10 to-transparent opacity-80" />
+                <Image src={service.image} alt={service.title} fill sizes="(max-width: 1200px) 25vw, 40vw" className={`object-cover transition-all duration-1000 ease-out ${isHovered ? "scale-105 grayscale-0 brightness-[0.5]" : "scale-125 grayscale brightness-[0.2]"}`} />
+                <div className="absolute inset-0 bg-linear-to-t from-carbon via-carbon/20 to-transparent opacity-90" />
               </motion.div>
-
-              <div className="relative z-10 w-full space-y-6">
+              <div className="relative z-10 w-full space-y-8">
                 <div className="flex items-center justify-between">
-                  <span className={`font-serif italic text-3xl transition-colors duration-500 ${isHovered ? "text-oro" : "text-crema/20"}`}>
-                    {service.roman}
-                  </span>
-                  <div className={`w-10 h-10 rounded-full border border-crema/20 flex items-center justify-center transition-all duration-500 ${isHovered ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
-                    <ArrowUpRight className="text-oro" size={20} />
-                  </div>
+                  <span className={`font-serif italic text-4xl transition-colors duration-700 ${isHovered ? "text-oro" : "text-crema/20"}`}>{service.roman}</span>
+                  <motion.div animate={{ scale: isHovered ? 1 : 0.5, opacity: isHovered ? 1 : 0 }} className="w-14 h-14 rounded-full border border-oro/30 flex items-center justify-center bg-oro/5"><ArrowUpRight className="text-oro" size={24} /></motion.div>
                 </div>
-
-                <div className="space-y-2">
-                  <span className={`font-sans text-[9px] uppercase tracking-[0.4em] block transition-all duration-500 ${isHovered ? "text-oro opacity-100" : "text-crema/40 opacity-0"}`}>
-                    {service.tag}
-                  </span>
-                  <h3 className={`font-serif text-crema leading-none transition-all duration-700 ${isHovered ? "text-6xl" : "text-2xl -rotate-90 origin-left translate-x-4 -translate-y-25"}`}>
-                    {service.title}
-                  </h3>
+                <div className="space-y-3">
+                  <span className={`font-sans text-[9px] uppercase tracking-[0.5em] block transition-all duration-700 ${isHovered ? "text-oro opacity-100 translate-y-0" : "text-crema/0 opacity-0 translate-y-4"}`}>{service.tag}</span>
+                  <h3 className={`font-serif text-crema leading-none transition-all duration-1000 ${isHovered ? "text-7xl" : "text-3xl -rotate-90 origin-left -translate-y-40 translate-x-6 whitespace-nowrap opacity-40"}`}>{service.title}</h3>
                 </div>
-
                 <AnimatePresence>
                   {isHovered && (
-                    <motion.div
-                      initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
-                      animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
-                      exit={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
-                      transition={{ duration: 0.8, ease: "circOut" }}
-                      className="space-y-6"
-                    >
-                      <p className="font-sans text-xs text-crema/60 max-w-sm leading-relaxed tracking-wide">
-                        {service.description}
-                      </p>
-                      <div className="flex gap-4">
-                        <div className="h-px w-12 bg-oro self-center" />
-                        <span className="text-[9px] text-oro tracking-[0.3em] uppercase font-bold">Solicitar Dossier</span>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.6 }} className="space-y-6">
+                      <p className="font-sans text-sm text-crema/60 max-w-md leading-relaxed tracking-wide">{service.description}</p>
+                      <div className="flex items-center gap-4 group/btn cursor-pointer">
+                        <div className="h-px w-16 bg-oro transition-all duration-500 group-hover/btn:w-24" />
+                        <span className="text-[10px] text-oro tracking-[0.4em] uppercase font-bold">Solicitar Privacidad</span>
                       </div>
                     </motion.div>
                   )}
@@ -145,82 +69,39 @@ export default function BespokeServices() {
         })}
       </div>
 
-      {/* --- MOBILE: THE VAULT STACK --- */}
-      <div className="lg:hidden flex flex-col px-6 space-y-[60vh] pb-[40vh]">
-  {SERVICES.map((service, index) => (
-    <MobileCard key={service.id} service={service} index={index} />
-  ))}
-</div>
+      <div className="lg:hidden flex flex-col px-6 space-y-[70vh] pb-[50vh]">
+        {SERVICES.map((service, index) => <MobileCard key={service.id} service={service} index={index} />)}
+      </div>
     </section>
   );
 }
 
-/**
- * OPTIMIZACIÓN MÓVIL (60 FPS)
- * 1. Quitamos Blur (Costoso para GPU).
- * 2. Sombras optimizadas.
- * 3. transform-gpu forzado.
- */
 function MobileCard({ service, index }: { service: any; index: number }) {
   const cardRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start start", "end start"]
-  });
-
-  // Transformaciones suaves y ligeras para el procesador móvil
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
-  // Reemplazamos blur por una capa de sombra/oscuridad progresiva
-  const tint = useTransform(scrollYProgress, [0, 1], [0, 0.4]);
-
-  const springScale = useSpring(scale, { stiffness: 60, damping: 20 });
+  const { scrollYProgress } = useScroll({ target: cardRef, offset: ["start start", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.88]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
+  const tint = useTransform(scrollYProgress, [0, 1], [0, 0.6]);
+  const springScale = useSpring(scale, { stiffness: 40, damping: 25, mass: 1.5 });
 
   return (
-    <div ref={cardRef} className="h-145 flex flex-col sticky top-[12vh]">
-      <motion.div 
-        style={{ scale: springScale, opacity }}
-        className="will-change-transform transform-gpu relative w-full h-full bg-carbon rounded-sm overflow-hidden shadow-2xl flex flex-col border border-crema/5"
-      >
-        {/* Capa de oscurecimiento progresiva (más fluida que un blur) */}
-        <motion.div 
-          style={{ opacity: tint }}
-          className="absolute inset-0 bg-black z-20 pointer-events-none"
-        />
-
+    <div ref={cardRef} className="h-145 flex flex-col sticky top-[15vh]">
+      <motion.div style={{ scale: springScale, opacity }} className="will-change-transform transform-gpu relative w-full h-full bg-carbon rounded-sm overflow-hidden shadow-2xl flex flex-col border border-crema/5">
+        <motion.div style={{ opacity: tint }} className="absolute inset-0 bg-black z-20 pointer-events-none" />
         <div className="relative h-[45%] w-full overflow-hidden">
-          <Image
-            src={service.image}
-            alt={service.title}
-            fill
-            sizes="(max-width: 768px) 90vw, 50vw"
-            className="object-cover brightness-75 scale-110"
-            priority={false}
-          />
-          <div className="absolute inset-0 bg-linear-to-t from-carbon to-transparent opacity-60" />
-          <span className="absolute top-8 left-8 font-serif italic text-oro text-2xl z-30">{service.roman}</span>
+          <Image src={service.image} alt={service.title} fill sizes="(max-width: 768px) 95vw, 50vw" className="object-cover brightness-75 scale-110" priority={false} />
+          <div className="absolute inset-0 bg-linear-to-t from-carbon to-transparent opacity-80" />
+          <span className="absolute top-8 left-8 font-serif italic text-oro text-3xl z-30">{service.roman}</span>
         </div>
-        
-        <div className="p-8 flex flex-col justify-between flex-1 relative bg-carbon z-10">
-          <div className="space-y-6">
-            <span className="font-sans text-[9px] uppercase tracking-[0.4em] text-oro/60">{service.tag}</span>
-            <h3 className="font-serif text-4xl text-crema leading-[0.9] tracking-tighter italic">
-              {service.title.split(' ')[0]} <br />
-              <span className="not-italic font-light">{service.title.split(' ')[1] || ""}</span>
-            </h3>
-            <p className="font-sans text-[11px] text-crema/40 leading-relaxed tracking-wide">
-              {service.description}
-            </p>
+        <div className="p-10 flex flex-col justify-between flex-1 relative bg-carbon z-10">
+          <div className="space-y-8">
+            <span className="font-sans text-[9px] uppercase tracking-[0.5em] text-oro/70 font-bold">{service.tag}</span>
+            <h3 className="font-serif text-5xl text-crema leading-[0.9] tracking-tighter italic">{service.title.split(' ')[0]} <br /> <span className="not-italic font-light">{service.title.split(' ')[1] || ""}</span></h3>
+            <p className="font-sans text-xs text-crema/40 leading-relaxed tracking-widest">{service.description}</p>
           </div>
-
-          <button className="flex items-center justify-between w-full pt-6 border-t border-crema/10 group active:scale-95 transition-transform">
-            <div className="flex flex-col items-start">
-              <span className="font-sans text-[8px] uppercase tracking-[0.3em] text-crema/30">Consultoría Privada</span>
-              <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-oro font-bold">Contactar Concierge</span>
-            </div>
-            <div className="w-12 h-12 rounded-full border border-oro/20 flex items-center justify-center bg-oro/5">
-              <ArrowUpRight size={20} className="text-oro" />
-            </div>
+          <button className="flex items-center justify-between w-full pt-8 border-t border-crema/10 active:scale-95 transition-transform">
+            <div className="flex flex-col items-start"><span className="font-sans text-[10px] uppercase tracking-[0.4em] text-oro font-bold italic">Concierge VIP</span></div>
+            <div className="w-14 h-14 rounded-full border border-oro/20 flex items-center justify-center bg-oro/5"><ArrowUpRight size={24} className="text-oro" /></div>
           </button>
         </div>
       </motion.div>
