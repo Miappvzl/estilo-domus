@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import Magnetic from "./Magnetic";
 import Link from "next/link";
 
@@ -16,134 +16,180 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [time, setTime] = useState("");
   const { scrollY } = useScroll();
 
-  // Detectar si es mobile para deshabilitar Magnetic
+  // Reloj en tiempo real (Caracas) para autoridad local
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    const updateTime = () => {
+      const vetime = new Intl.DateTimeFormat("es-VE", {
+        timeZone: "America/Caracas",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }).format(new Date());
+      setTime(vetime);
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 60000);
+
+    const checkDesktop = () => setIsDesktop(window.innerWidth > 1024);
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("resize", checkDesktop);
+    };
   }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 50 && !isScrolled) setIsScrolled(true);
-    if (latest <= 50 && isScrolled) setIsScrolled(false);
+    setIsScrolled(latest > 50);
   });
 
-  // Renderizamos el botón de Toggle por separado para asegurar su Z-INDEX
-  const NavTrigger = (
-    <button 
-      onClick={() => setIsOpen(!isOpen)}
-      className={`relative p-4 transition-colors duration-500 rounded-full ${
-        // Si está abierto, forzamos color Carbon para que resalte sobre el fondo Crema del menú
-        isOpen ? "text-carbon" : (isScrolled ? "text-carbon" : "text-crema")
-      }`}
-      aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
-    >
-      {isOpen ? <X size={32} strokeWidth={1.5} /> : <Menu size={32} strokeWidth={1.5} />}
-    </button>
-  );
-
   return (
-    // SUBIMOS EL Z-INDEX DEL HEADER A 100001 (Por encima del Noise y el Cursor)
     <header
-      className={`fixed top-0 left-0 w-full z-[100001] transition-all duration-500 ease-in-out ${
+      className={`fixed top-0 left-0 w-full z-[100001] transition-all duration-700 ease-[0.76, 0, 0.24, 1] ${
         isScrolled && !isOpen
-          ? "py-4 bg-crema/80 backdrop-blur-md border-b border-carbon/5 shadow-sm" 
-          : "py-8 bg-transparent"
+          ? "py-4"
+          : "py-8"
       }`}
     >
       <nav className="container mx-auto px-6 flex items-center justify-between relative z-[100002]">
         
-        {/* LOGO */}
-        <Link href="/" className="relative">
-          <span className={`text-2xl font-serif tracking-tight transition-colors duration-500 ${
-            isOpen ? "text-carbon" : (isScrolled ? "text-carbon" : "text-crema")
-          }`}>
-            Estilo<span className="italic">Domus</span>
-          </span>
-        </Link>
+        {/* LADO IZQUIERDO: LOGO & STATUS */}
+        <div className="flex items-center gap-8">
+          <Link href="/" className="relative group">
+            <motion.span 
+              className={`text-2xl font-serif tracking-tighter transition-colors duration-500 ${
+                isOpen ? "text-carbon" : (isScrolled ? "text-carbon" : "text-crema")
+              }`}
+            >
+              Estilo<span className="italic font-light">Domus</span>
+            </motion.span>
+          </Link>
 
-        {/* DESKTOP MENU */}
-        <div className="hidden md:flex items-center gap-12">
-          <ul className="flex gap-8">
+          {/* INDICADOR DE STATUS (Solo Desktop) */}
+          <div className={`hidden lg:flex items-center gap-3 border-l pl-8 transition-opacity duration-500 ${
+            isScrolled || isOpen ? "border-carbon/10 opacity-40" : "border-crema/20 opacity-60"
+          }`}>
+            <div className="w-1 h-1 bg-oro rounded-full animate-pulse" />
+            <span className={`text-[9px] uppercase tracking-[0.3em] font-sans ${
+               isOpen ? "text-carbon" : (isScrolled ? "text-carbon" : "text-crema")
+            }`}>
+              Caracas, VE • {time} VET
+            </span>
+          </div>
+        </div>
+
+        {/* CENTRO: DESKTOP MENU (Capsule Style) */}
+        <div className={`hidden lg:flex items-center px-8 py-3 rounded-full transition-all duration-700 border ${
+          isScrolled 
+            ? "bg-crema/40 backdrop-blur-xl border-carbon/5 shadow-sm" 
+            : "bg-transparent border-transparent"
+        }`}>
+          <ul className="flex gap-10">
             {navLinks.map((link) => (
               <li key={link.name} className="relative group">
                 <Link
                   href={link.href}
-                  className={`text-xs uppercase tracking-[0.2em] font-medium transition-colors duration-500 ${
+                  className={`text-[10px] uppercase tracking-[0.25em] font-bold transition-colors duration-500 ${
                     isScrolled ? "text-carbon" : "text-crema"
                   }`}
                 >
                   {link.name}
                 </Link>
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-bronze transition-all duration-500 group-hover:w-full" />
+                {/* Underline Animado de Elite */}
+                <motion.span 
+                  className="absolute -bottom-1 left-0 w-0 h-[1px] bg-oro transition-all duration-500 group-hover:w-full"
+                />
               </li>
             ))}
           </ul>
-
-          <Magnetic strength={0.2}>
-            <button className={`px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-500 border ${
-              isScrolled 
-                ? "border-carbon text-carbon hover:bg-carbon hover:text-crema" 
-                : "border-crema text-crema hover:bg-crema hover:text-carbon"
-            }`}>
-              Agendar
-            </button>
-          </Magnetic>
         </div>
 
-        {/* MOBILE TRIGGER: Solo aplicamos Magnetic si NO es mobile */}
-        <div className="md:hidden">
-          {!isMobile ? (
-            <Magnetic strength={0.4}>{NavTrigger}</Magnetic>
-          ) : (
-            NavTrigger
-          )}
+        {/* LADO DERECHO: CTA & TRIGGER */}
+        <div className="flex items-center gap-4">
+          <div className="hidden md:block">
+            {isDesktop ? (
+              <Magnetic strength={0.2}>
+                <button className={`px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-700 relative overflow-hidden group border ${
+                  isScrolled 
+                    ? "border-carbon text-carbon" 
+                    : "border-crema text-crema"
+                }`}>
+                  <span className="relative z-10 group-hover:text-crema transition-colors duration-500">Concierge</span>
+                  <div className={`absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out ${
+                    isScrolled ? "bg-carbon" : "bg-crema"
+                  }`} />
+                </button>
+              </Magnetic>
+            ) : (
+              <button className="px-8 py-3 border border-crema text-crema rounded-full text-[10px] font-bold tracking-widest uppercase">
+                Concierge
+              </button>
+            )}
+          </div>
+
+          {/* Icono Menu Mobile */}
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className={`p-4 transition-colors duration-500 lg:hidden ${
+              isOpen ? "text-carbon" : (isScrolled ? "text-carbon" : "text-crema")
+            }`}
+          >
+            {isOpen ? <X size={28} strokeWidth={1} /> : <Menu size={28} strokeWidth={1} />}
+          </button>
         </div>
       </nav>
 
-      {/* MOBILE OVERLAY */}
+      {/* OVERLAY DE MENÚ MÓVIL (Versión Editorial) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ clipPath: "circle(0% at 90% 5%)" }}
-            animate={{ clipPath: "circle(150% at 90% 5%)" }}
-            exit={{ clipPath: "circle(0% at 90% 5%)" }}
-            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 bg-crema flex flex-col justify-center items-center z-[100000]"
+            initial={{ y: "-100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-100%" }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 bg-[#F9F9F7] flex flex-col z-[100000] p-8"
           >
-            <ul className="flex flex-col gap-8 text-center">
-              {navLinks.map((link, i) => (
-                <motion.li
-                  key={link.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + i * 0.1 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-5xl font-serif text-carbon hover:italic transition-all tracking-tighter"
+            <div className="mt-24 space-y-2">
+              <span className="text-[10px] uppercase tracking-[0.4em] text-bronze ml-1">Menú Principal</span>
+              <ul className="flex flex-col">
+                {navLinks.map((link, i) => (
+                  <motion.li
+                    key={link.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + i * 0.1 }}
                   >
-                    {link.name}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-6xl font-serif text-carbon py-2 block hover:italic transition-all leading-tight"
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
 
-            {/* Redes Sociales en el menú móvil */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="absolute bottom-12 flex gap-8 text-[10px] uppercase tracking-widest text-carbon/40"
-            >
-              <span>Instagram</span>
-              <span>LinkedIn</span>
-            </motion.div>
+            {/* Footer del Menú Móvil */}
+            <div className="mt-auto grid grid-cols-2 border-t border-carbon/10 pt-8 pb-12 gap-8">
+              <div className="space-y-4">
+                <span className="text-[9px] uppercase tracking-widest text-carbon/40 block">Ubicación</span>
+                <p className="font-serif text-sm text-carbon uppercase">Las Mercedes, Caracas</p>
+              </div>
+              <div className="space-y-4">
+                <span className="text-[9px] uppercase tracking-widest text-carbon/40 block">Social</span>
+                <div className="flex flex-col gap-2 font-serif text-sm text-carbon uppercase">
+                  <Link href="#">Instagram</Link>
+                  <Link href="#">LinkedIn</Link>
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
