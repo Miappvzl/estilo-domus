@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // Necesario para tus fotos de lujo
+        hostname: 'images.unsplash.com', 
       },
     ],
   },
