@@ -51,7 +51,7 @@ export default function Philosophy() {
             alt="Philosophy Anchor"
             fill
             priority
-            className="object-cover grayscale brightness-40 md:brightness-30"
+            className="object-cover grayscale-15 brightness-40 md:brightness-30"
           />
           <div className="absolute inset-0 bg-linear-to-b from-carbon/60 via-transparent to-carbon/80" />
         </motion.div>

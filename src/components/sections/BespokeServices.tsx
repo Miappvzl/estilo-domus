@@ -72,7 +72,7 @@ export default function BespokeServices() {
               hovered === i ? "flex-4" : "flex-1"
             }`}
           >
-            <Image src={s.img} alt={s.title} fill className={`object-cover grayscale-15 brightness-50 transition-all duration-1000 ${hovered === i ? "grayscale-0 brightness-75 scale-110" : ""}`} />
+            <Image src={s.img} alt={s.title} fill className={`object-cover grayscale brightness-50 transition-all duration-1000 ${hovered === i ? "grayscale-0 brightness-75 scale-110" : ""}`} />
             <div className={`absolute inset-0 transition-opacity duration-700 ${hovered === i ? "bg-carbon/40" : "bg-carbon/20"} `} />
             <div className="absolute inset-0 p-12 flex flex-col justify-between z-10">
               <span className="font-serif italic text-oro text-4xl">{s.id}</span>
