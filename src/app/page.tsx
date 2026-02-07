@@ -5,6 +5,9 @@ import LegacyIntelligence from "@/components/sections/LegacyIntelligence";
 import PrivateVault from "@/components/sections/PrivateVault";
 import Footer from "@/components/ui/Footer";
 import BespokeServices from "@/components/sections/BespokeServices";
+import Milestones from "@/components/sections/Milestones";
+import { Milestone } from "lucide-react";
+
 
 export default function Home() {
   const jsonLd = {
@@ -49,6 +52,7 @@ export default function Home() {
       <PrivateVault />
 
       {/* 6. FOOTER: También suele ser oscuro (bg-carbon) */}
+      <Milestones/>
       <Footer />
     </main>
   );

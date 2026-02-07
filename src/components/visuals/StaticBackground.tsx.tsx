@@ -1,66 +1,53 @@
 "use client";
-
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function StaticBackground() {
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      setMouse({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, []);
+
+  const springX = useSpring(mouse.x, { stiffness: 50, damping: 20 });
+  const springY = useSpring(mouse.y, { stiffness: 50, damping: 20 });
+
   return (
-    <div className="fixed inset-0 -z-20 w-full h-full bg-[#D9D9D9] overflow-hidden pointer-events-none">
-      
-      {/* 1. LA PARED DE PIEDRA (Base de contraste) */}
-      <div className="absolute inset-0 bg-[#E5E5E3]" />
+    <div className="fixed inset-0 -z-20 w-full h-full bg-[#E5E5E3] overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 bg-[#F5F5F3]" />
 
-      {/* 2. EL TRAGALUZ (Cenital Primario - Luz Fría/Moderna)
-          Usamos 'mix-blend-mode: screen' para que la luz sea incandescente. */}
+      {/* REJILLA DE INGENIERÍA (Líneas horizontales y verticales de precisión) */}
       <div 
-        className="absolute top-[-25%] left-[-15%] w-[130vw] h-[100vh] rounded-full opacity-90 mix-blend-screen"
+        className="absolute inset-0 opacity-[0.12]"
         style={{
-          background: 'radial-gradient(circle at center, #FFFFFF 0%, rgba(255,255,255,0.4) 30%, transparent 70%)',
-          filter: 'blur(100px)',
-          willChange: 'transform',
+          backgroundImage: `
+            linear-gradient(to bottom, #000 1px, transparent 1px),
+            linear-gradient(to right, #000 1px, transparent 1px)
+          `,
+          backgroundSize: '100% 10vh, 10vw 100%'
         }}
       />
 
-      {/* 3. EL REBOTE CÁLIDO (Serenidad de Piso - Oro/Ámbar)
-          Simula el sol golpeando un material noble en el suelo. 
-          Este es el toque que da la 'calma' y el 'prestigio'. */}
-      <div 
-        className="absolute bottom-[-20%] right-[-10%] w-[100vw] h-[90vh] rounded-full opacity-60 mix-blend-overlay"
-        style={{
-          background: 'radial-gradient(circle at center, #C5B358 0%, #E8DCC4 40%, transparent 80%)',
-          filter: 'blur(120px)',
-          willChange: 'transform',
-        }}
+      {/* CURSOR TÉCNICO (Las líneas que siguen al mouse como una regla) */}
+      <motion.div 
+        style={{ y: springY }}
+        className="absolute left-0 w-full h-px bg-oro/30 z-10"
+      />
+      <motion.div 
+        style={{ x: springX }}
+        className="absolute top-0 w-px h-full bg-oro/30 z-10"
       />
 
-      {/* 4. AURA CENTRAL (Luz de Relleno Platino)
-          Une los dos focos extremos para que no haya un 'vacío' en el centro. */}
-      <div 
-        className="absolute top-[20%] left-[20%] w-[60vw] h-[60vh] opacity-40 mix-blend-screen"
-        style={{
-          background: 'radial-gradient(circle at center, #F0F0F0 0%, transparent 70%)',
-          filter: 'blur(150px)',
-        }}
-      />
+      {/* ILUMINACIÓN VOLUMÉTRICA */}
+      <div className="absolute top-[-10%] left-[-10%] w-[100vw] h-[80vh] rounded-full opacity-60 mix-blend-screen bg-white blur-[120px]" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[80vw] h-[80vh] rounded-full opacity-30 mix-blend-multiply bg-[#C5B358] blur-[140px]" />
 
-      {/* 5. DIFUSIÓN ATMOSFÉRICA (Glow Post-Proceso)
-          Este es el secreto de la serenidad: unificamos todo bajo una neblina de lujo. */}
-      <div className="absolute inset-0 backdrop-blur-[40px] md:backdrop-blur-[80px] opacity-30 bg-white/5" />
-
-      {/* 6. VIÑETA ARQUITECTÓNICA (Profundidad) */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          background: 'radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.05) 100%)',
-        }}
-      />
-
-      {/* 7. TEXTURA DE GRANO FÍSICO (Inyectada para look Editorial) */}
-      <div 
-        className="absolute inset-0 opacity-[0.2] mix-blend-soft-light pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
-        }}
-      />
+      {/* TEXTURA DE PAPEL TÉCNICO */}
+      <div className="absolute inset-0 opacity-[0.25] mix-blend-soft-light noise-overlay" />
     </div>
   );
 }
