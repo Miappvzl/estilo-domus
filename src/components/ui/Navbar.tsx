@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Magnetic from "./Magnetic";
 import Link from "next/link";
 
@@ -17,11 +17,14 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [mounted, setMounted] = useState(false); // <--- CRÍTICO PARA EL ERROR DE HIDRATACIÓN
   const [time, setTime] = useState("");
   const { scrollY } = useScroll();
 
-  // Reloj en tiempo real (Caracas) para autoridad local
+  // 1. Manejo de Montaje y Reloj
   useEffect(() => {
+    setMounted(true); // Marcamos que el componente ya está en el cliente
+
     const updateTime = () => {
       const vetime = new Intl.DateTimeFormat("es-VE", {
         timeZone: "America/Caracas",
@@ -31,6 +34,7 @@ export default function Navbar() {
       }).format(new Date());
       setTime(vetime);
     };
+
     updateTime();
     const timer = setInterval(updateTime, 60000);
 
@@ -44,16 +48,27 @@ export default function Navbar() {
     };
   }, []);
 
+  // 2. Detección de Scroll (Optimizada)
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 50);
+    if (latest > 50 && !isScrolled) setIsScrolled(true);
+    if (latest <= 50 && isScrolled) setIsScrolled(false);
   });
+
+  // Si no está montado, devolvemos una versión simplificada o nula para evitar el error
+  // El servidor renderizará esto vacío y el cliente lo "inflará" al llegar.
+  if (!mounted) return (
+    <header className="fixed top-0 left-0 w-full z-100001 py-8 bg-transparent">
+      <div className="container mx-auto px-6 flex justify-between items-center">
+        <span className="text-2xl font-serif text-crema">Estilo<span className="italic">Domus</span></span>
+        <div className="w-8 h-8" /> 
+      </div>
+    </header>
+  );
 
   return (
     <header
       className={`fixed top-0 left-0 w-full z-100001 transition-all duration-700 ease-[0.76, 0, 0.24, 1] ${
-        isScrolled && !isOpen
-          ? "py-4"
-          : "py-8"
+        isScrolled && !isOpen ? "py-4" : "py-8"
       }`}
     >
       <nav className="container mx-auto px-6 flex items-center justify-between relative z-100002">
@@ -70,14 +85,12 @@ export default function Navbar() {
             </motion.span>
           </Link>
 
-          {/* INDICADOR DE STATUS (Solo Desktop) */}
-          <div className={`hidden lg:flex items-center gap-3 border-l pl-8 transition-opacity duration-500 ${
-            isScrolled || isOpen ? "border-carbon/10 opacity-40" : "border-crema/20 opacity-60"
+          {/* INDICADOR DE STATUS (Hora de Caracas) */}
+          <div className={`hidden lg:flex items-center gap-3 border-l pl-8 transition-all duration-500 ${
+            isOpen ? "border-carbon/10 opacity-40 text-carbon" : (isScrolled ? "border-carbon/10 opacity-40 text-carbon" : "border-crema/20 opacity-60 text-crema")
           }`}>
             <div className="w-1 h-1 bg-oro rounded-full animate-pulse" />
-            <span className={`text-[9px] uppercase tracking-[0.3em] font-sans ${
-               isOpen ? "text-carbon" : (isScrolled ? "text-carbon" : "text-crema")
-            }`}>
+            <span className="text-[9px] uppercase tracking-[0.3em] font-sans">
               Caracas, VE • {time} VET
             </span>
           </div>
@@ -100,7 +113,6 @@ export default function Navbar() {
                 >
                   {link.name}
                 </Link>
-                {/* Underline Animado de Elite */}
                 <motion.span 
                   className="absolute -bottom-1 left-0 w-0 h-px bg-oro transition-all duration-500 group-hover:w-full"
                 />
@@ -126,7 +138,9 @@ export default function Navbar() {
                 </button>
               </Magnetic>
             ) : (
-              <button className="px-8 py-3 border border-crema text-crema rounded-full text-[10px] font-bold tracking-widest uppercase">
+              <button className={`px-8 py-3 border rounded-full text-[10px] font-bold tracking-widest uppercase transition-colors ${
+                isScrolled ? "border-carbon text-carbon" : "border-crema text-crema"
+              }`}>
                 Concierge
               </button>
             )}
@@ -144,7 +158,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* OVERLAY DE MENÚ MÓVIL (Versión Editorial) */}
+      {/* OVERLAY DE MENÚ MÓVIL (Editorial Style) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -167,7 +181,7 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="text-6xl font-serif text-carbon py-2 block hover:italic transition-all leading-tight"
+                      className="text-6xl font-serif text-carbon py-2 block hover:italic transition-all leading-tight tracking-tighter"
                     >
                       {link.name}
                     </Link>
@@ -176,15 +190,14 @@ export default function Navbar() {
               </ul>
             </div>
 
-            {/* Footer del Menú Móvil */}
             <div className="mt-auto grid grid-cols-2 border-t border-carbon/10 pt-8 pb-12 gap-8">
               <div className="space-y-4">
-                <span className="text-[9px] uppercase tracking-widest text-carbon/40 block">Ubicación</span>
-                <p className="font-serif text-sm text-carbon uppercase">Las Mercedes, Caracas</p>
+                <span className="text-[9px] uppercase tracking-widest text-carbon/40 block font-bold">Ubicación</span>
+                <p className="font-serif text-sm text-carbon uppercase tracking-tighter">Las Mercedes, Caracas</p>
               </div>
               <div className="space-y-4">
-                <span className="text-[9px] uppercase tracking-widest text-carbon/40 block">Social</span>
-                <div className="flex flex-col gap-2 font-serif text-sm text-carbon uppercase">
+                <span className="text-[9px] uppercase tracking-widest text-carbon/40 block font-bold">Social</span>
+                <div className="flex flex-col gap-2 font-serif text-sm text-carbon uppercase tracking-tighter">
                   <Link href="#">Instagram</Link>
                   <Link href="#">LinkedIn</Link>
                 </div>
