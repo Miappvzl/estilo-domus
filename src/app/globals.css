@@ -109,3 +109,23 @@ h3 {
 section {
   contain: paint;
 }
+
+@media (max-width: 768px) {
+  /* Desactivamos efectos costosos en móviles */
+  .noise-overlay {
+    opacity: 0.02 !important;
+    mix-blend-mode: normal !important; /* soft-light es lento en móviles */
+  }
+
+  /* Forzamos a que todo lo que se mueva tenga su propia capa */
+  .transform-gpu {
+    transform: translate3d(0,0,0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Evitamos que el desenfoque del fondo 3D sea dinámico */
+  .backdrop-blur-mobile {
+    backdrop-filter: blur(20px); /* Valor fijo, no animado */
+  }
+}

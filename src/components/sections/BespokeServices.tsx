@@ -158,45 +158,28 @@ function MobilePanel({ service }: { service: any }) {
     offset: ["start end", "center center", "end start"]
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.4, 1, 1, 0.4]);
-  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.3, 1, 1.3]);
-  const yOffset = useTransform(scrollYProgress, [0, 1], [40, -40]);
-
-  const smoothScale = useSpring(scale, { stiffness: 60, damping: 25 });
+  // Usamos configuraciones de resorte MUY bajas para no saturar el procesador
+  const smoothScale = useSpring(
+    useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 0.95]),
+    { stiffness: 30, damping: 20 } 
+  );
 
   return (
-    <div ref={cardRef} className="h-[75vh] flex flex-col items-center sticky top-[12vh]">
+    <div ref={cardRef} className="h-[60vh] flex flex-col items-center sticky top-[20vh]">
       <motion.div 
-        style={{ scale: smoothScale, opacity }}
-        className="will-change-transform transform-gpu relative w-full h-full bg-carbon rounded-xs overflow-hidden shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col border border-crema/5"
+        style={{ scale: smoothScale }}
+        // Quitamos el cálculo de opacidad dinámico en el contenedor principal en móvil
+        className="will-change-transform transform-gpu relative w-full h-full bg-carbon rounded-sm overflow-hidden shadow-xl border border-white/5"
       >
-        <motion.div style={{ scale: imgScale }} className="absolute inset-0 z-0">
-          <Image src={service.image} alt={service.title} fill className="object-cover brightness-[0.35] grayscale-[0.2]" />
-          <div className="absolute inset-0 bg-linear-to-b from-carbon/60 via-transparent to-carbon/95" />
-        </motion.div>
+        <Image src={service.image} alt={service.title} fill className="object-cover brightness-[0.4] grayscale-[0.5]" sizes="90vw" />
         
-        <div className="relative z-10 p-8 h-full flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <span className="font-serif italic text-oro text-3xl">{service.roman}</span>
-            <span className="font-sans text-[9px] uppercase tracking-[0.4em] text-oro/60 mt-2">{service.tag}</span>
-          </div>
-
-          <motion.div style={{ y: yOffset }} className="space-y-6">
-            <h3 className="font-serif text-5xl text-crema leading-[0.9] tracking-tighter">
-              {service.title.split(' ')[0]} <br />
-              <span className="italic font-light text-oro/80">{service.title.split(' ')[1] || ""}</span>
-            </h3>
-            <p className="font-sans text-[11px] text-crema/40 leading-relaxed tracking-widest uppercase max-w-[85%]">
-              {service.description}
-            </p>
-          </motion.div>
-
-          <button className="flex items-center justify-between w-full pt-6 border-t border-crema/10 group active:scale-95 transition-transform">
-             <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-oro font-bold">Inquirir Detalles</span>
-             <div className="w-12 h-12 rounded-full border border-oro/20 flex items-center justify-center bg-oro/5">
-               <ArrowUpRight size={20} className="text-oro" />
-             </div>
+        <div className="relative z-10 p-6 h-full flex flex-col justify-between">
+          <span className="font-serif italic text-oro text-2xl">{service.roman}</span>
+          <h3 className="font-serif text-4xl text-crema leading-none tracking-tight">
+            {service.title}
+          </h3>
+          <button className="text-[10px] text-oro uppercase tracking-widest border-t border-white/10 pt-4">
+            Dossier Privado
           </button>
         </div>
       </motion.div>

@@ -98,14 +98,14 @@ function PhilosophySection({ item, index, globalProgress }: { item: any, index: 
         {/* LÍNEAS CINÉTICAS (Parallax Desfasado) */}
         <motion.h3 
           style={{ x: xOffset, letterSpacing }}
-          className="font-serif text-5xl md:text-8xl lg:text-9xl text-carbon leading-[0.85] tracking-tighter uppercase font-medium"
+          className="font-serif text-4xl md:text-7xl lg:text-9xl text-carbon leading-[0.85] tracking-tighter uppercase font-medium"
         >
           {item.line1}
         </motion.h3>
         
         <motion.h3 
           style={{ x: useTransform(xOffset, (v) => -v * 1.2) }}
-          className="font-serif text-5xl md:text-8xl lg:text-9xl text-carbon leading-[0.85] tracking-tighter uppercase italic font-light ml-8 md:ml-20"
+          className="font-serif text-4xl md:text-8xl lg:text-9xl text-carbon leading-[0.85] tracking-tighter uppercase italic font-light ml-8 md:ml-20"
         >
           {item.line2}
         </motion.h3>
