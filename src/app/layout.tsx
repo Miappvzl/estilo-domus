@@ -4,6 +4,7 @@ import Navbar from "@/components/ui/Navbar";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import CustomCursor from "@/components/ui/CustomCursor";
 import StaticBackground from "@/components/visuals/StaticBackground.tsx";
+import Preloader from "@/components/ui/Preloader";
 import "./globals.css";
 
 // Configuración de fuentes optimizada
@@ -49,6 +50,7 @@ export default function RootLayout({
     <html lang="es" className={`${inter.variable} ${playfair.variable}`}>
       <body className="antialiased overflow-x-hidden bg-transparent selection:bg-oro selection:text-crema"> 
         
+         <Preloader />
         {/* 1. Fondo 3D (Z-Index: -10) */}
         <StaticBackground/> 
         

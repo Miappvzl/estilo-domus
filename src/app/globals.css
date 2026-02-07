@@ -132,3 +132,9 @@ section {
     letter-spacing: -0.02em; /* Menos agresivo en pantallas pequeñas */
   }
 }
+
+/* Bloqueo preventivo de scroll durante la carga */
+body:has(.z-\[200000\]) {
+  overflow: hidden !important;
+  height: 100vh;
+}
