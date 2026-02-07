@@ -1,103 +1,150 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 const INSIGHTS = [
-  { category: "Análisis de Activos", title: "El índice Alpha: Por qué el mármol de Carrara retiene valor.", date: "Marzo 2026", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800" },
-  { category: "Tendencias", title: "Arquitectura Brutalista: La nueva tendencia en activos refugio.", date: "Febrero 2026", image: "https://images.unsplash.com/photo-1446771326090-d910bfaf00f6?w=600&auto=format&fit=crop" },
-  { category: "Inversión", title: "Off-Plan vs. Heritage: Dónde está el ROI en 2026.", date: "Enero 2026", image: "https://images.unsplash.com/photo-1717715308932-2ba727611550?w=600&auto=format&fit=crop" },
-  { category: "Psicología", title: "La psicología del comprador anónimo en Venezuela.", date: "Enero 2026", image: "https://images.unsplash.com/photo-1543893794-d5badd72f7c2?w=600&auto=format&fit=crop" },
+  { id: "01", category: "MARKET ALPHA", title: "MÁRMOL DE CARRARA: EL REFUGIO DE VALOR", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200" },
+  { id: "02", category: "ARCHITECTURE", title: "BRUTALISMO: LA ESTÉTICA DEL PODER", image: "https://images.unsplash.com/photo-1446771326090-d910bfaf00f6?w=1200" },
+  { id: "03", category: "INVESTMENT", title: "OFF-MARKET: PROTOCOLO DE INVISIBILIDAD", image: "https://images.unsplash.com/photo-1717715308932-2ba727611550?w=1200" },
+  { id: "04", category: "LEGACY", title: "PATRIMONIO LÍQUIDO EN EL EJE DE CARACAS", image: "https://images.unsplash.com/photo-1543893794-d5badd72f7c2?w=1200" },
 ];
 
 export default function LegacyIntelligence() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   
-  // COORDENADAS GLOBALES
-  const mouse = {
-    x: useMotionValue(0),
-    y: useMotionValue(0),
-  };
+  // Aumentamos a 800vh: 200vh de "pista" por noticia para máxima legibilidad
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
 
-  const smoothOptions = { damping: 25, stiffness: 80, mass: 0.5 };
-  const smoothX = useSpring(mouse.x, smoothOptions);
-  const smoothY = useSpring(mouse.y, smoothOptions);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      // Usamos clientX/Y para posicionamiento relativo a la pantalla (viewport)
-      mouse.x.set(e.clientX);
-      mouse.y.set(e.clientY);
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  // Rotación dinámica basada en la velocidad del mouse
-  const rotate = useTransform(smoothX, (v) => (v - mouse.x.get()) * 0.1);
+  // Física de inercia pesada: stiffness bajo y mass alto para que el scroll sea "majestuoso"
+  const smoothProgress = useSpring(scrollYProgress, { 
+    stiffness: 30, 
+    damping: 20, 
+    mass: 1.2 
+  });
 
   return (
-    <section className="relative py-32 md:py-64 bg-transparent overflow-hidden cursor-default">
-      <div className="container relative z-10 mx-auto px-6">
-        <div className="mb-24 space-y-6">
-          <div className="flex items-center gap-4">
-            <span className="h-px w-16 bg-oro" />
-            <span className="font-sans text-[10px] uppercase tracking-[0.5em] text-carbon/40 font-bold italic">Intelligence Reports</span>
-          </div>
-          <h2 className="font-serif text-7xl md:text-9xl text-carbon leading-none tracking-tighter uppercase">Legacy <br /> <span className="italic font-light text-oro">Insights</span></h2>
+    <section ref={containerRef} className="relative h-[800vh] bg-transparent">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        
+        {/* GUI DE ESCÁNER (Detalle Visual Elite) */}
+        <div className="absolute inset-0 pointer-events-none z-20">
+          <div className="absolute top-1/2 left-0 w-full h-px bg-oro/20" />
+          <div className="absolute top-[45%] left-12 h-[10%] w-px bg-oro/40" />
+          <div className="absolute top-[45%] right-12 h-[10%] w-px bg-oro/40" />
         </div>
 
-        <div className="border-t border-carbon/10">
+        {/* CONTENEDOR DE PORTALES */}
+        <div className="relative w-full h-full">
           {INSIGHTS.map((item, index) => (
-            <div
-              key={index}
-              onMouseEnter={() => setActiveIndex(index)}
-              onMouseLeave={() => setActiveIndex(null)}
-              className={`relative border-b border-carbon/10 py-12 md:py-20 transition-all duration-700 flex flex-col md:flex-row md:items-center gap-8 ${activeIndex !== null && activeIndex !== index ? "opacity-20 blur-[1px]" : "opacity-100"}`}
-            >
-              <span className="md:w-1/4 font-sans text-[9px] uppercase tracking-[0.4em] text-carbon/40 font-bold">{item.category}</span>
-              <h3 className="md:flex-1 font-serif text-3xl md:text-5xl lg:text-7xl text-carbon leading-tight tracking-tighter uppercase transition-all duration-700">
-                {activeIndex === index ? <span className="italic text-oro">{item.title}</span> : item.title}
-              </h3>
-              <div className="md:w-1/6 flex flex-col items-end">
-                <span className="text-[10px] font-sans tracking-[0.3em] text-carbon/30 uppercase">{item.date}</span>
-                <ArrowUpRight size={24} className={`text-oro mt-4 transition-all duration-700 ${activeIndex === index ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`} />
-              </div>
-            </div>
+            <InsightPortal 
+              key={item.id} 
+              item={item} 
+              index={index} 
+              total={INSIGHTS.length} 
+              progress={smoothProgress} 
+            />
           ))}
         </div>
       </div>
-
-      <AnimatePresence>
-        {activeIndex !== null && (
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            style={{ 
-              position: "fixed", 
-              top: 0, 
-              left: 0, 
-              x: smoothX, 
-              y: smoothY, 
-              translateX: "-50%", 
-              translateY: "-50%",
-              rotate,
-              pointerEvents: "none", 
-              zIndex: 100005 
-            }}
-            className="hidden lg:block w-120 aspect-video overflow-hidden rounded-sm shadow-[0_40px_100px_rgba(0,0,0,0.5)] border border-white/10"
-          >
-            <motion.div key={activeIndex} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative w-full h-full bg-carbon">
-              <Image src={INSIGHTS[activeIndex].image} alt="Floating Insight" fill className="object-cover scale-110" />
-              <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
+  );
+}
+
+function InsightPortal({ item, index, total, progress }: any) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  
+  // Meseta de Foco: la noticia se queda quieta y nítida en el centro (0.45 a 0.55 de su tiempo)
+  const opacity = useTransform(
+    progress,
+    [start, start + 0.05, end - 0.05, end],
+    [0, 1, 1, 0]
+  );
+
+  const scale = useTransform(
+    progress,
+    [start, (start + end) / 2, end],
+    [0.8, 1, 0.8]
+  );
+
+  // Clip-path cinematográfico: se abre de arriba a abajo
+  const clipPath = useTransform(
+    progress,
+    [start + 0.02, (start + end) / 2, end - 0.02],
+    ["inset(50% 0% 50% 0%)", "inset(0% 0% 0% 0%)", "inset(50% 0% 50% 0%)"]
+  );
+
+  // Movimiento horizontal sutil: ya no "cruza" toda la pantalla, solo se desliza suavemente
+  const xTranslate = useTransform(
+    progress,
+    [start, end],
+    ["15%", "-15%"]
+  );
+
+  return (
+    <motion.div 
+      style={{ opacity }}
+      className="absolute inset-0 flex items-center justify-center pointer-events-none"
+    >
+      {/* IMAGEN DE FONDO (Portal) */}
+      <motion.div 
+        style={{ clipPath }}
+        className="absolute inset-0 z-0 w-full h-full overflow-hidden"
+      >
+        <Image 
+          src={item.image} 
+          alt={item.title} 
+          fill 
+          className="object-cover grayscale brightness-[0.3] scale-110"
+          sizes="100vw"
+        />
+        {/* Tintura de lujo */}
+        <div className="absolute inset-0 bg-gradient-to-b from-carbon via-transparent to-carbon opacity-80" />
+      </motion.div>
+
+      {/* CONTENIDO TEXTUAL RESPONSIVE */}
+      <motion.div 
+        style={{ x: xTranslate, scale }}
+        className="relative z-10 w-full px-6 md:px-24 flex flex-col items-center text-center"
+      >
+        {/* Info Tag */}
+        <div className="flex items-center gap-4 mb-6 md:mb-10">
+          <span className="font-serif italic text-oro text-xl md:text-3xl">0{index + 1}</span>
+          <div className="w-8 md:w-16 h-px bg-oro/30" />
+          <span className="font-sans text-[9px] md:text-[11px] uppercase tracking-[0.5em] text-crema/60">{item.category}</span>
+        </div>
+
+        {/* Título con Clamp: Evita que se corte en cualquier dispositivo */}
+        <h3 className="font-serif text-crema leading-[0.9] tracking-tighter uppercase 
+                       text-3xl sm:text-5xl md:text-7xl lg:text-8xl 
+                       max-w-[95vw] md:max-w-[80vw] lg:max-w-6xl 
+                       whitespace-normal break-words drop-shadow-2xl">
+          {item.title}
+        </h3>
+
+        {/* CTA Interactivo */}
+        <div className="mt-10 md:mt-16 flex items-center gap-4">
+           <div className="w-10 md:w-20 h-px bg-oro/20" />
+           <button className="group flex items-center gap-3 pointer-events-auto">
+             <span className="font-sans text-[10px] md:text-[12px] uppercase tracking-[0.4em] text-oro font-bold">Explorar Insight</span>
+             <div className="w-8 h-8 rounded-full border border-oro/20 flex items-center justify-center group-hover:bg-oro group-hover:text-carbon transition-all duration-500">
+               <ArrowUpRight size={14} />
+             </div>
+           </button>
+           <div className="w-10 md:w-20 h-px bg-oro/20" />
+        </div>
+      </motion.div>
+
+      {/* MARCADOR DE SEGURIDAD (Background) */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 font-sans text-[8px] text-crema/10 tracking-[1em] uppercase hidden sm:block">
+        EstiloDomus Intelligence // Secure Line // 2026
+      </div>
+    </motion.div>
   );
 }
