@@ -3,7 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/ui/Navbar";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import CustomCursor from "@/components/ui/CustomCursor";
-import FluidBackground from "@/components/visuals/FluidBackground";
+import StaticBackground from "@/components/visuals/StaticBackground.tsx";
 import "./globals.css";
 
 // Configuración de fuentes optimizada
@@ -50,7 +50,7 @@ export default function RootLayout({
       <body className="antialiased overflow-x-hidden bg-transparent selection:bg-oro selection:text-crema"> 
         
         {/* 1. Fondo 3D (Z-Index: -10) */}
-        <FluidBackground /> 
+        <StaticBackground/> 
         
         {/* 2. Cursor (Z-Index: 100000) */}
         <CustomCursor />

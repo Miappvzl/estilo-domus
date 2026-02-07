@@ -1,33 +1,34 @@
 @import "tailwindcss";
 
 @theme {
-  /* Paleta Old Money */
-  --color-crema: #F5F5F0;
-  --color-carbon: #1A1A1A;
-  --color-bronze: #A67C52;
-  --color-oro: #C5B358;
+  
+  --color-crema: #FFFFFF;    /* Blanco puro */
+  --color-carbon: #1A1A1A;   /* Carbón Premium */
+  --color-oro: #BDB7AB;      /* Oro frío / Platino */
+  --color-stone: #F0F0F2;    /* Gris seda */
 
   /* Tipografías Variables */
   --font-playfair: var(--font-playfair);
   --font-inter: var(--font-inter);
   
-  /* Animaciones Custom */
+  /* Animaciones Cinéticas */
   --animate-reveal: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @layer base {
   :root {
-    --bg-crema: #F5F5F0;
-    --text-carbon: #000000;
+    /* Mantenemos el Carbono en 1A1A1A para que no sea un negro 'barato' */
+    --text-carbon: #1A1A1A;
+    --selection-bg: #C5B358;
   }
 
   html {
-    /* CRÍTICO: Fondo transparente para ver el 3D */
+    /* Transparente para dejar ver el StaticBackground del Layout */
     background-color: transparent;
     scrollbar-width: none;
     -ms-overflow-style: none;
     overscroll-behavior-y: none; 
-
+    scroll-behavior: smooth;
   }
 
   html::-webkit-scrollbar {
@@ -35,98 +36,99 @@
   }
 
   body {
-    /* CRÍTICO: Eliminamos bg-crema y ponemos bg-transparent */
+    /* La base es transparente; el fondo real viene de StaticBackground.tsx */
     @apply bg-transparent text-carbon antialiased selection:bg-oro selection:text-crema;
     font-feature-settings: "ss01", "ss02", "cv01";
     overflow-x: hidden;
   }
 
-  /* Consolidación de Noise Overlay */
+  /* TEXTURA EDITORIAL: Noise Overlay Consolidado */
   .noise-overlay {
-   .noise-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  pointer-events: none !important;
   z-index: 99999;
-  /* El secreto: 'soft-light' mezcla el grano con los colores de abajo de forma realista */
-  mix-blend-mode: soft-light; 
-  opacity: 1; /* Al usar soft-light, podemos subir un poco la opacidad */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.80' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-   @media (max-width: 768px) {
-    opacity: 0.02;
-  }
   
+  /* 
+     EL SECRETO: Bajamos la opacidad al mínimo (10-15%) 
+     y usamos 'overlay' para que el grano sea blanco en las luces 
+     y oscuro en las sombras, como un sensor de cámara 8K.
+  */
+  opacity: 0.12; 
+  mix-blend-mode: overlay;
+
+  /* Grano ultra-fino (baseFrequency alto) */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  
+  transform: translateZ(0);
 }
-}
+
+  /* Tipografía Editorial */
+  h1, h2, h3 {
+    @apply tracking-tighter;
+    letter-spacing: -0.05em;
+  }
 }
 
 @keyframes reveal {
   from { clip-path: inset(100% 0 0 0); }
   to { clip-path: inset(0 0 0 0); }
 }
-/* --- CONFIGURACIÓN DE CURSOR INTELIGENTE --- */
 
-/* 1. Solo ocultamos el puntero si el dispositivo tiene un mouse (puntero fino) */
+/* --- CONFIGURACIÓN DE CURSOR INTELIGENTE --- */
 @media (pointer: fine) {
   body, a, button, [role="button"], input, select, textarea {
     cursor: none !important;
   }
 }
 
-/* 2. Forzamos que el puntero sea normal en pantallas táctiles (puntero grueso) */
 @media (pointer: coarse) {
   body, a, button, [role="button"], input, select, textarea {
     cursor: auto !important;
   }
 }
 
-/* Asegurar que el noise-overlay no capture eventos nunca */
-.noise-overlay {
-  pointer-events: none !important;
-}
-
-h3 {
-  letter-spacing: -0.05em; /* Títulos apretados = Look Editorial Moderno */
-}
-
+/* --- UTILITIES & GPU ACCELERATION --- */
 @layer utilities {
   .gpu-layer {
-    transform: translateZ(0);
+    transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
     will-change: transform, opacity;
   }
 
-  /* Utilidad para secciones que necesiten dejar ver el fondo */
   .bg-glass {
-    @apply bg-transparent backdrop-blur-[2px];
+    @apply bg-transparent backdrop-blur-md border border-white/10;
   }
 }
 
+/* Optimizamos el renderizado de secciones para evitar Layout Shifts */
 section {
   contain: paint;
 }
 
+/* --- OPTIMIZACIONES MÓVILES EXTREMAS --- */
 @media (max-width: 768px) {
-  /* Desactivamos efectos costosos en móviles */
   .noise-overlay {
-    opacity: 0.02 !important;
-    mix-blend-mode: normal !important; /* soft-light es lento en móviles */
+    /* Bajamos la intensidad en móvil para no saturar el procesador */
+    opacity: 0.03 !important;
+    mix-blend-mode: normal !important;
   }
 
-  /* Forzamos a que todo lo que se mueva tenga su propia capa */
   .transform-gpu {
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
-    perspective: 1000px;
   }
   
-  /* Evitamos que el desenfoque del fondo 3D sea dinámico */
+  /* Desactivamos animaciones pesadas en scroll si el dispositivo es lento */
   .backdrop-blur-mobile {
-    backdrop-filter: blur(20px); /* Valor fijo, no animado */
+    @apply backdrop-blur-sm;
+  }
+
+  h1, h2 {
+    letter-spacing: -0.02em; /* Menos agresivo en pantallas pequeñas */
   }
 }
-
