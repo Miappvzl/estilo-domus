@@ -59,7 +59,7 @@ export default function Milestones() {
           </div>
 
           {/* EL "CHAMBER" 3D (Optimizado para Alcatel/MediaTek) */}
-          <div className="lg:col-span-7 relative h-[500px] flex items-center justify-center perspective-[1500px]">
+          <div className="lg:col-span-7 relative h-500px flex items-center justify-center perspective-[1500px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
