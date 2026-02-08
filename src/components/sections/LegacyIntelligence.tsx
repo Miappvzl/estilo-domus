@@ -95,7 +95,7 @@ function IntelligenceDossier({ post, index, total, progress }: any) {
           <div className="flex items-center justify-between border-t border-white/10 pt-6">
             <div className="flex items-center gap-2 opacity-30">
                <Shield size={10} className="text-oro" />
-               <span className="font-sans text-[7px] text-crema tracking-widest uppercase font-bold">Encrypted Archive</span>
+               <span className="font-sans text-[7px] text-crema tracking-widest uppercase font-bold">Colección Privada</span>
             </div>
             
             <button className="w-10 h-10 rounded-full border border-oro/20 flex items-center justify-center bg-oro/5 active:bg-oro transition-colors">

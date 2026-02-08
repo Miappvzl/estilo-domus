@@ -15,14 +15,14 @@ const PHILOSOPHY_CARDS = [
   {
     id: "02",
     tag: "MATERIA",
-    title: "Honestidad en cada poro de la piedra.",
+    title: "Materiales nobles: Piedra volcánica, maderas y luz natural.",
     desc: "Piedra volcánica, maderas centenarias y luz que esculpe cada rincón. Creemos en la verdad de los materiales nobles.",
     detail: "ORIGEN ORGÁNICO"
   },
   {
     id: "03",
     tag: "LEGADO",
-    title: "Refugios para almas en busca de paz.",
+    title: "Espacios diseñados para la privacidad y el bienestar.",
     desc: "No construimos para el ahora, sino para las mentes que entienden el verdadero valor del silencio y la introspección.",
     detail: "SILENCIO VISUAL"
   }

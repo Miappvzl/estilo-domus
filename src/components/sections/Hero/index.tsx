@@ -34,7 +34,7 @@ export default function Hero() {
           <Magnetic strength={0.2}>
             <button className="relative group bg-crema text-carbon px-16 py-8 rounded-full font-sans text-[11px] uppercase tracking-[0.3em] font-black overflow-hidden shadow-2xl transition-all hover:px-20">
               <span className="relative z-10 group-hover:text-crema transition-colors duration-500">
-                Iniciar Consulta Privada
+                Agendar Visita
               </span>
               <div className="absolute inset-0 bg-oro translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[0.76, 0, 0.24, 1]" />
             </button>

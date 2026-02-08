@@ -37,7 +37,7 @@ export default function LivingCanvas() {
             Materia & Atmosfera
           </motion.span>
           <h2 className="font-serif text-5xl md:text-8xl text-carbon uppercase tracking-tighter leading-none">
-            The Living <br /> <span className="italic font-light">Canvas</span>
+            Espacios <br /> <span className="italic font-light">Vivos</span>
           </h2>
         </div>
 

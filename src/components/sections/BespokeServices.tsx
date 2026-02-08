@@ -10,7 +10,7 @@ import p3 from "@assets/images/p3.webp";
 import p4 from "@assets/images/p4.webp";
 
 const SERVICES = [
-  { id: "01", title: "Global Citizenship", tag: "RESIDENCIA", desc: "Gestión de Golden Visa y estructuras fiscales internacionales.", img: p1 },
+  { id: "01", title: "Ciudadanía Global", tag: "RESIDENCIA", desc: "Gestión de Golden Visa y estructuras fiscales internacionales.", img: p1 },
   { id: "02", title: "Asset Management", tag: "INVERSIÓN", desc: "Maximización de ROI y mantenimiento preventivo de activos.", img: p2 },
   { id: "03", title: "Art Curating", tag: "PATRIMONIO", desc: "Adquisición estratégica de obras de arte para su colección.", img: p3 },
   { id: "04", title: "Private Concierge", tag: "LIFESTYLE", desc: "Relocation, jets privados y acceso a clubes exclusivos.", img: p4 },
@@ -43,7 +43,7 @@ export default function BespokeServices() {
               Protocolos Elite
             </motion.span>
             <h2 className="font-serif text-6xl md:text-9xl text-carbon leading-[0.8] tracking-tighter uppercase">
-              { "Bespoke".split("").map((l, i) => (
+              { "Concierge".split("").map((l, i) => (
                 <motion.span 
                   key={i}
                   initial={{ opacity: 0 }}
@@ -54,7 +54,7 @@ export default function BespokeServices() {
                 </motion.span>
               ))} 
               <br /> 
-              <span className="italic font-light text-oro">Concierge</span>
+              <span className="italic font-light text-oro">Personalizado</span>
             </h2>
           </div>
         </div>
@@ -185,7 +185,7 @@ function MobileCircularCard({ service, index, total }: { service: any, index: nu
               whileTap={{ scale: 0.95 }}
               className="mt-4 flex items-center gap-2 text-oro text-[10px] font-bold uppercase tracking-widest"
             >
-              Inquirir <ArrowUpRight size={14} />
+              COnsultar Disponibilidad <ArrowUpRight size={14} />
             </motion.button>
           </div>
         </div>

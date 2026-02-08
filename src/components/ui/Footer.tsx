@@ -43,7 +43,7 @@ export default function Footer() {
             className="group relative"
           >
             <a 
-              href="mailto:concierge@estilodomus.com" 
+              href="mailto:estilodomus.ccs@gmail.com" 
               className="flex items-center justify-center overflow-hidden"
             >
               <div className="flex">

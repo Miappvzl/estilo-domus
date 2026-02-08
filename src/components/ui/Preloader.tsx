@@ -84,11 +84,9 @@ export default function Preloader() {
 
           {/* Metadata inferior */}
           <div className="absolute bottom-12 flex flex-col items-center gap-2">
+         
             <span className="font-sans text-[8px] tracking-[0.6em] text-crema/20 uppercase">
-              Iniciando Protocolo de Prestigio
-            </span>
-            <span className="font-sans text-[8px] tracking-[0.6em] text-crema/20 uppercase">
-              © 2026
+              © 2024 ESTILODOMUS - TODOS LOS DERECHOS RESERVADOS
             </span>
           </div>
         </motion.div>

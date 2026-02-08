@@ -22,8 +22,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "EstiloDomus | Real Estate de Ultra-Lujo",
-  description: "Curaduría exclusiva de propiedades arquitectónicas y residencias de alto nivel en Venezuela.",
+  title: "EstiloDomus | Arquitectura y Bienes Raíces",
+  description: "Curaduría inmobiliaria en el Eje Este de Caracas",
   keywords: ["luxury real estate", "Caracas", "diseño arquitectónico", "inversión premium"],
   openGraph: {
     title: "EstiloDomus | Exclusividad Inmobiliaria",
