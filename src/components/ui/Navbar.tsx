@@ -124,7 +124,7 @@ export default function Navbar() {
               <button className={`px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-700 relative overflow-hidden group border ${
                  isOpen || isLight ? "border-carbon text-carbon" : "border-crema text-crema"
               }`}>
-                <span className="relative z-10 group-hover:text-crema transition-colors duration-500">Concierge</span>
+                <span className="relative z-10 group-hover:text-crema transition-colors duration-500">Agendar Cita</span>
                 <div className={`absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out ${
                   isOpen || isLight ? "bg-carbon" : "bg-crema"
                 }`} />
