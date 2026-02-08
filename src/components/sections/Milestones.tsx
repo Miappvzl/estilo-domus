@@ -5,11 +5,31 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 import { Target, Cpu, HardHat, Activity, Zap, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import breeam from "@assets/images/services/breeam.webp";
-
 const MILESTONES = [
-  { id: "M.01", title: "CERTIFICACION LEED (CONCEPTO)", cat: "SUSTENTABILIDAD", desc: "Acabados 100% sostenibles y reciclables.", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200", tech: ["STRESS: 120%", "MASS: 4.2k", "SENSORS: ON"] },
-  { id: "M.02", title: "EFICIENCIA ENERGETICA", cat: "SUSTENTABILIDAD", desc: "Protocolo de sostenibilidad pasiva con huella de carbono negativa.", img: breeam.src, tech: ["THRM: -40%", "HVAC: AI", "CO2: ZERO"] },
-  { id: "M.03", title: "ESTRUCTURA ANTISISMICA", cat: "SEGURIDAD", desc: "Estructura diseñada para soportar sismos de hasta 8.5 grados de magnitud.", img: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200", tech: ["LUX: 99.8%", "ANGLE: OPT", "GLASS: SMART"] }
+  { 
+    id: "M.01", 
+    title: "CERTIFICACION LEED (CONCEPTO)", 
+    cat: "SUSTENTABILIDAD", 
+    desc: "Acabados 100% sostenibles y reciclables.", 
+    img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200", 
+    tech: ["NIVEL: PLATINO", "PUNTAJE: 89/110", "CICLO: CERRADO"] 
+  },
+  { 
+    id: "M.02", 
+    title: "EFICIENCIA ENERGETICA", 
+    cat: "SUSTENTABILIDAD", 
+    desc: "Protocolo de sostenibilidad pasiva con huella de carbono negativa.", 
+    img: breeam.src, 
+    tech: ["AUTONOMIA: 100%", "AISLAMIENTO: R-40", "CLIMA: VRF"] 
+  },
+  { 
+    id: "M.03", 
+    title: "ESTRUCTURA ANTISISMICA", 
+    cat: "SEGURIDAD", 
+    desc: "Estructura diseñada para soportar sismos de hasta 8.5 grados de magnitud.", 
+    img: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200", 
+    tech: ["MAGNITUD: 8.5 Mw", "DISIPACION: ACTIVA", "CONCRETO: C60"] 
+  }
 ];
 
 export default function Milestones() {

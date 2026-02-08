@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, Instagram, Linkedin, ArrowUpRight } from "lucide-react";
+// 1. IMPORTANTE: Asegúrate de que Instagram esté importado aquí
+import { ArrowUp, ArrowUpRight, Github, Instagram } from "lucide-react";
 import Magnetic from "@/components/ui/Magnetic";
 import Link from "next/link";
 import ContactPortal from "./ContactPortal";
@@ -20,7 +21,7 @@ export default function Footer() {
   return (
     <footer className="relative bg-carbon text-crema pt-32 pb-12 overflow-hidden">
       
-      {/* 1. CURVATURA SUPERIOR (Separador de Estilo) */}
+      {/* 1. CURVATURA SUPERIOR */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-0 rotate-180">
         <svg 
           className="relative block w-[calc(100%+1.3px)] h-[80px]" 
@@ -28,13 +29,12 @@ export default function Footer() {
           viewBox="0 0 1200 120" 
           preserveAspectRatio="none"
         >
-         
         </svg>
       </div>
 
       <div className="container mx-auto px-6">
         
-        {/* 2. BIG TYPE CTA - DISPARADOR DEL PORTAL */}
+        {/* 2. BIG TYPE CTA */}
         <div className="flex flex-col items-center justify-center py-20">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
@@ -60,8 +60,6 @@ export default function Footer() {
                 strokeWidth={1}
               />
             </div>
-            
-            {/* Indicador visual de clic */}
             <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-0 h-px bg-oro group-hover:w-full transition-all duration-1000" />
           </motion.div>
           
@@ -82,10 +80,28 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start gap-8">
             <h4 className="font-sans text-[10px] uppercase tracking-[0.4em] text-oro font-bold">Digital Presence</h4>
             <div className="flex gap-10">
-              <Magnetic strength={0.2}>
-                <Link href="https://www.instagram.com/iamgabocode?igsh=MWV4c3ViMGE0aTF0OA==" className="text-sm font-serif italic hover:text-oro transition-colors">Instagram</Link>
+              
+              {/* --- INICIO DEL NUEVO BOTÓN DE INSTAGRAM --- */}
+              <Magnetic strength={0.3}>
+                <Link 
+                  href="https://www.instagram.com/iamgabocode?igsh=MWV4c3ViMGE0aTF0OA==" 
+                  target="_blank"
+                  className="group flex items-center gap-3 transition-all duration-300"
+                >
+                  {/* Contenedor del icono circular */}
+                  <div className="p-3 border border-crema/20 rounded-full group-hover:border-oro group-hover:bg-oro/10 transition-all duration-500">
+                    <Instagram className="w-5 h-5 text-crema group-hover:text-oro transition-colors duration-300" strokeWidth={1.5} />
+                  </div>
+                  
+                  {/* Texto */}
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-sans uppercase tracking-widest opacity-50 group-hover:text-oro transition-colors">Follow Us</span>
+                    <span className="text-sm font-serif italic text-crema group-hover:text-oro transition-colors">@iamgabocode</span>
+                  </div>
+                </Link>
               </Magnetic>
-             
+               {/* --- FIN DEL NUEVO BOTÓN DE INSTAGRAM --- */}
+
             </div>
           </div>
 
@@ -102,27 +118,35 @@ export default function Footer() {
         </div>
 
         {/* 4. BOTTOM BAR */}
-        <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-crema/5 opacity-40">
-          <div className="font-sans text-[9px] tracking-[0.3em] uppercase mb-6 md:mb-0">
-            © {currentYear} | Diseñado y desarrollado por Angel Ojeda
+        <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-crema/10">
+          <div className="font-sans text-[9px] tracking-[0.3em] uppercase mb-6 md:mb-0 opacity-60">
+            © {currentYear} EstiloDomus | Engineering by Angel Ojeda
           </div>
-          <div className="font-sans text-[9px] tracking-[0.3em] uppercase flex gap-10">
-            <span className="hidden sm:inline">VET • {new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-            <Link href="https://github.com/Miappvzl/estilo-domus" target="_blank" className="hover:text-crema transition-colors underline decoration-oro/40 underline-offset-4">
-              Ver Codigo en GitHub
+          
+          <div className="flex items-center gap-8">
+            <span className="font-sans text-[9px] tracking-[0.3em] uppercase opacity-40 hidden sm:inline">
+              VET • {new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', hour12: false })}
+            </span>
+            
+            <Link 
+              href="https://github.com/Miappvzl/estilo-domus" 
+              target="_blank" 
+              className="flex items-center gap-2 border border-crema/20 px-4 py-2 rounded-full hover:bg-crema hover:text-carbon transition-all duration-300 group"
+            >
+              <Github className="w-3 h-3 group-hover:scale-110 transition-transform" />
+              <span className="font-sans text-[9px] font-bold tracking-[0.2em]">GITHUB REPO</span>
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Marca de Agua Editorial */}
+      {/* Marca de Agua */}
       <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 pointer-events-none select-none opacity-[0.015]">
         <span className="text-[28vw] font-serif italic text-crema leading-none">
           Domus
         </span>
       </div>
 
-      {/* PORTAL DE CONTACTO INMERSIVO */}
       <ContactPortal 
         isOpen={isContactOpen} 
         onClose={() => setIsContactOpen(false)} 
