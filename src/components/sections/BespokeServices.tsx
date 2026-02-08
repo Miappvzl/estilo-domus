@@ -43,7 +43,7 @@ export default function BespokeServices() {
               Protocolos Elite
             </motion.span>
             <h2 className="font-serif text-6xl md:text-9xl text-carbon leading-[0.8] tracking-tighter uppercase">
-              { "Concierge".split("").map((l, i) => (
+              { "Concierge ".split("").map((l, i) => (
                 <motion.span 
                   key={i}
                   initial={{ opacity: 0 }}
@@ -185,7 +185,7 @@ function MobileCircularCard({ service, index, total }: { service: any, index: nu
               whileTap={{ scale: 0.95 }}
               className="mt-4 flex items-center gap-2 text-oro text-[10px] font-bold uppercase tracking-widest"
             >
-              COnsultar Disponibilidad <ArrowUpRight size={14} />
+              Agendar Cita <ArrowUpRight size={14} />
             </motion.button>
           </div>
         </div>

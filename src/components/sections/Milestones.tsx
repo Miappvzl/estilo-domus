@@ -7,9 +7,9 @@ import Image from "next/image";
 import breeam from "@assets/images/services/breeam.webp";
 
 const MILESTONES = [
-  { id: "M.01", title: "PREMIO ALPHA 2025", cat: "ESTRUCTURA", desc: "Integración de concreto brutalista en ecosistemas vírgenes de El Hatillo.", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200", tech: ["STRESS: 120%", "MASS: 4.2k", "SENSORS: ON"] },
-  { id: "M.02", title: "CERTIFICADO BREEAM", cat: "EFICIENCIA", desc: "Protocolo de sostenibilidad pasiva con huella de carbono negativa.", img: breeam.src, tech: ["THRM: -40%", "HVAC: AI", "CO2: ZERO"] },
-  { id: "M.03", title: "INGENIERÍA DORADA", cat: "PRECISIÓN", desc: "Métricas de aprovechamiento lumínico mediante algoritmos solares.", img: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200", tech: ["LUX: 99.8%", "ANGLE: OPT", "GLASS: SMART"] }
+  { id: "M.01", title: "CERTIFICACION LEED (CONCEPTO)", cat: "SUSTENTABILIDAD", desc: "Acabados 100% sostenibles y reciclables.", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200", tech: ["STRESS: 120%", "MASS: 4.2k", "SENSORS: ON"] },
+  { id: "M.02", title: "EFICIENCIA ENERGETICA", cat: "SUSTENTABILIDAD", desc: "Protocolo de sostenibilidad pasiva con huella de carbono negativa.", img: breeam.src, tech: ["THRM: -40%", "HVAC: AI", "CO2: ZERO"] },
+  { id: "M.03", title: "ESTRUCTURA ANTISISMICA", cat: "SEGURIDAD", desc: "Estructura diseñada para soportar sismos de hasta 8.5 grados de magnitud.", img: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200", tech: ["LUX: 99.8%", "ANGLE: OPT", "GLASS: SMART"] }
 ];
 
 export default function Milestones() {
@@ -52,7 +52,7 @@ export default function Milestones() {
         <div className="flex flex-col gap-4 mb-12 md:mb-24">
           <div className="flex items-center gap-3 text-oro">
             <Activity size={14} className="animate-pulse" />
-            <span className="font-mono text-[9px] tracking-[0.8em] uppercase">Achievements_Log_V.04</span>
+            <span className="font-mono text-[9px] tracking-[0.8em] uppercase">Estándares de Calidad</span>
           </div>
           <h2 className="font-serif text-5xl md:text-8xl text-carbon uppercase leading-none tracking-tighter">
             Hitos de <br /> <span className="italic font-light text-oro">Ingeniería</span>
@@ -90,9 +90,7 @@ export default function Milestones() {
                     <div className="absolute inset-0 p-5 md:p-10 flex flex-col justify-between z-10">
                       <div className="flex justify-between items-start">
                          <div className="flex flex-col gap-1">
-                           <span className="font-mono text-[8px] md:text-[10px] text-oro tracking-[0.3em] bg-oro/10 px-2 py-0.5 border border-oro/20 uppercase rounded-full self-start">
-                             VERIFIED
-                           </span>
+                          
                            <span className="font-mono text-[7px] md:text-[8px] text-crema/40 ml-1 uppercase">
                              ID: {mounted ? logId : "..."}
                            </span>

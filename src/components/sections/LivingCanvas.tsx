@@ -12,12 +12,12 @@ import g6 from "@/assets/images/services/g6.webp";
 
 
 const ART_GALLERY = [
-  { id: "MTR_01", title: "Luz Cenital", note: "Oda al Alabastro", speed: 0.1, size: "large", img: g3, coord: "LAT: 10.48" },
-  { id: "MTR_02", title: "Veta Imperial", note: "Mármol Negro Marquina", speed: 0.25, size: "small", img: g6, coord: "LONG: 66.90" },
-  { id: "MTR_03", title: "Cielo Líquido", note: "Borde de Piedra Volcánica", speed: 0.15, size: "medium", img: g1, coord: "AQ_VET_02" },
-  { id: "MTR_04", title: "Fuerza Bruta", note: "Concreto de Autor", speed: 0.2, size: "large", img: g2, coord: "STR_REF_99" },
-  { id: "MTR_05", title: "Seda Solar", note: "Lino de Edición Limitada", speed: 0.1, size: "medium", img: g5, coord: "TEXT_INT_04" },
-  { id: "MTR_06", title: "Vértice de Luz", note: "Corte Geométrico 90°", speed: 0.3, size: "small", img: g2, coord: "GEO_ACC_01" },
+  { id: "", title: "Luz Cenital", note: "Acabados en Alabastro", speed: 0.1, size: "large", img: g3, coord: "" },
+  { id: "", title: "Veta Imperial", note: "Mármol Negro Marquina", speed: 0.25, size: "small", img: g6, coord: "" },
+  { id: "", title: "Piedra Volcánica Pulida", note: "Borde de Piedra Volcánica", speed: 0.15, size: "medium", img: g1, coord: "" },
+  { id: "", title: "Concreto Obra Limpia", note: "Concreto de Autor", speed: 0.2, size: "large", img: g2, coord: "" },
+  { id: "", title: "Seda Solar", note: "Lino de Edición Limitada", speed: 0.1, size: "medium", img: g5, coord: "" },
+  { id: "", title: "Vértice de Luz", note: "Corte Geométrico 90°", speed: 0.3, size: "small", img: g4, coord: "" },
 ];
 
 export default function LivingCanvas() {

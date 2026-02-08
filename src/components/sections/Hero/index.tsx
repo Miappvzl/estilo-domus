@@ -22,7 +22,7 @@ export default function Hero() {
           <div className="flex items-center gap-8 opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
              <div className="flex items-center gap-2">
                 <ShieldCheck size={14} className="text-oro" />
-                <span className="text-[8px] font-sans tracking-widest text-crema uppercase font-bold">Confidencialidad Certificada</span>
+                <span className="text-[8px] font-sans tracking-widest text-crema uppercase font-bold">Bienes Raíces Exclusivos</span>
              </div>
              <div className="flex items-center gap-2">
                 <Award size={14} className="text-oro" />

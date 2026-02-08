@@ -181,7 +181,7 @@ export default function Navbar() {
               <div className="space-y-4">
                 <span className="text-[9px] uppercase tracking-widest text-carbon/40 block font-bold">Social</span>
                 <div className="flex flex-col gap-2 font-serif text-sm text-carbon uppercase tracking-tighter">
-                  <Link href="#">Instagram</Link>
+                  <Link href="https://www.instagram.com/iamgabocode?igsh=MWV4c3ViMGE0aTF0OA==">Instagram</Link>
                   <Link href="#">LinkedIn</Link>
                 </div>
               </div>

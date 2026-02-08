@@ -86,7 +86,7 @@ export default function Preloader() {
           <div className="absolute bottom-12 flex flex-col items-center gap-2">
          
             <span className="font-sans text-[8px] tracking-[0.6em] text-crema/20 uppercase">
-              © 2024 ESTILODOMUS - TODOS LOS DERECHOS RESERVADOS
+              EstiloDomus | Concepto de Diseño Web
             </span>
           </div>
         </motion.div>
