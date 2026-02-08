@@ -19,7 +19,6 @@ export default function Navbar() {
   const [isDesktop, setIsDesktop] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [time, setTime] = useState("");
-  // IMPORTANTE: El tema inicial debe coincidir con tu Hero (Oscuro -> Texto Crema)
   const [navTheme, setNavTheme] = useState<"light" | "dark">("dark");
   
   const { scrollY } = useScroll();
@@ -29,10 +28,7 @@ export default function Navbar() {
 
     const updateTime = () => {
       setTime(new Intl.DateTimeFormat("es-VE", {
-        timeZone: "America/Caracas",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
+        timeZone: "America/Caracas", hour: "2-digit", minute: "2-digit", hour12: false,
       }).format(new Date()));
     };
     updateTime();
@@ -42,23 +38,18 @@ export default function Navbar() {
     checkDesktop();
     window.addEventListener("resize", checkDesktop);
 
-    // LÓGICA REFORZADA:
+    // LÓGICA DE DETECCIÓN DE TEMA
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        // Si la sección está cruzando la parte superior (donde está el navbar)
         if (entry.isIntersecting) {
           const theme = entry.target.getAttribute("data-nav-theme") as "light" | "dark";
-          if (theme) {
-            console.log("Navbar Theme Changed to:", theme); // Debug para que veas si funciona
-            setNavTheme(theme);
-          }
+          if (theme) setNavTheme(theme);
         }
       });
     };
 
-    // Usamos un rootMargin que solo mira los primeros 80px de la pantalla
     const observer = new IntersectionObserver(handleIntersect, {
-      rootMargin: "0px 0px -95% 0px", // Detecta el choque justo en el tope
+      rootMargin: "0px 0px -95% 0px",
       threshold: 0
     });
 
@@ -78,30 +69,30 @@ export default function Navbar() {
 
   if (!mounted) return null;
 
-  // Si navTheme === 'light' (fondo blanco), texto negro (carbon)
-  // Si navTheme === 'dark' (fondo negro), texto blanco (crema)
   const isLight = navTheme === "light";
+  // Cuando el menú está abierto, forzamos texto Carbon (oscuro) porque el fondo del menú es Crema (claro)
   const dynamicTextColor = isOpen ? "text-carbon" : (isLight ? "text-carbon" : "text-crema");
   const dynamicBorderColor = isOpen ? "border-carbon/10" : (isLight ? "border-carbon/10" : "border-crema/20");
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-100001 transition-all duration-700 ease-[0.76, 0, 0.24, 1] ${
+      className={`fixed top-0 left-0 w-full z-[100001] transition-all duration-700 ease-[0.76, 0, 0.24, 1] ${
         isScrolled && !isOpen ? "py-4" : "py-8"
       }`}
     >
-      <nav className="container mx-auto px-6 flex items-center justify-between relative z-100002">
+      <nav className="container mx-auto px-6 flex items-center justify-between relative z-[100002]">
         
         {/* LOGO */}
         <div className="flex items-center gap-8">
-          <Link href="/" className="relative group">
+          <Link href="/" onClick={() => setIsOpen(false)} className="relative group">
             <span className={`text-2xl font-serif tracking-tighter transition-colors duration-500 ${dynamicTextColor}`}>
               Estilo<span className="italic font-light">Domus</span>
             </span>
           </Link>
 
+          {/* STATUS INDICATOR */}
           <div className={`hidden lg:flex items-center gap-3 border-l pl-8 transition-all duration-500 ${dynamicBorderColor}`}>
-            <div className={`w-1 h-1 rounded-full animate-pulse ${isLight ? "bg-oro" : "bg-oro"}`} />
+            <div className="w-1 h-1 bg-oro rounded-full animate-pulse" />
             <span className={`text-[9px] uppercase tracking-[0.3em] font-sans ${dynamicTextColor}`}>
               Caracas, VE • {time} VET
             </span>
@@ -126,27 +117,78 @@ export default function Navbar() {
           </ul>
         </div>
 
-        {/* CTA */}
+        {/* CTA & TRIGGER */}
         <div className="flex items-center gap-4">
           <div className="hidden md:block">
             <Magnetic strength={0.2}>
               <button className={`px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-700 relative overflow-hidden group border ${
-                 isLight ? "border-carbon text-carbon" : "border-crema text-crema"
+                 isOpen || isLight ? "border-carbon text-carbon" : "border-crema text-crema"
               }`}>
                 <span className="relative z-10 group-hover:text-crema transition-colors duration-500">Concierge</span>
                 <div className={`absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out ${
-                  isLight ? "bg-carbon" : "bg-crema"
+                  isOpen || isLight ? "bg-carbon" : "bg-crema"
                 }`} />
               </button>
             </Magnetic>
           </div>
 
-          <button onClick={() => setIsOpen(!isOpen)} className={`p-4 transition-colors lg:hidden ${dynamicTextColor}`}>
+          <button 
+            onClick={() => setIsOpen(!isOpen)} 
+            className={`p-4 transition-colors lg:hidden relative z-[100003] ${dynamicTextColor}`}
+          >
             {isOpen ? <X size={28} strokeWidth={1} /> : <Menu size={28} strokeWidth={1} />}
           </button>
         </div>
       </nav>
-      {/* ... AnimatePresence del menú móvil igual ... */}
+
+      {/* MOBILE OVERLAY REINSTALADO */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ y: "-100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-100%" }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 bg-[#F9F9F7] flex flex-col z-[100000] p-8"
+          >
+            <div className="mt-24 space-y-2">
+              <span className="text-[10px] uppercase tracking-[0.4em] text-bronze ml-1 font-bold">Menú Principal</span>
+              <ul className="flex flex-col">
+                {navLinks.map((link, i) => (
+                  <motion.li
+                    key={link.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + i * 0.1 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-6xl font-serif text-carbon py-2 block hover:italic transition-all leading-tight tracking-tighter"
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-auto grid grid-cols-2 border-t border-carbon/10 pt-8 pb-12 gap-8">
+              <div className="space-y-4">
+                <span className="text-[9px] uppercase tracking-widest text-carbon/40 block font-bold">Ubicación</span>
+                <p className="font-serif text-sm text-carbon uppercase tracking-tighter">Las Mercedes, Caracas</p>
+              </div>
+              <div className="space-y-4">
+                <span className="text-[9px] uppercase tracking-widest text-carbon/40 block font-bold">Social</span>
+                <div className="flex flex-col gap-2 font-serif text-sm text-carbon uppercase tracking-tighter">
+                  <Link href="#">Instagram</Link>
+                  <Link href="#">LinkedIn</Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -4,6 +4,8 @@ import BespokeServices from "@/components/sections/BespokeServices";
 import LegacyIntelligence from "@/components/sections/LegacyIntelligence";
 import PrivateVault from "@/components/sections/PrivateVault";
 import Footer from "@/components/ui/Footer";
+import Milestones from "@/components/sections/Milestones";
+import LivingCanvas from "@/components/sections/LivingCanvas";
 
 export default function Home() {
   return (
@@ -28,6 +30,16 @@ export default function Home() {
       <div data-nav-theme="light">
         <LegacyIntelligence />
       </div>
+
+
+       <div data-nav-theme="light">
+          <LivingCanvas/>
+       </div>
+
+
+     <div data-nav-theme="light">
+       <Milestones/> 
+     </div>
 
       {/* SECCIÓN OSCURA: Private Vault */}
       <div data-nav-theme="dark">

@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import { Lock, ArrowRight } from "lucide-react";
 import Magnetic from "@/components/ui/Magnetic";
+import privateVaultImage from "@assets/images/services/private.webp";
 
 export default function PrivateVault() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,10 +60,10 @@ export default function PrivateVault() {
       {/* CAPA 1: FONDO MISTERIOSO */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1600585154526-990dcea4db0d?q=80&w=2000"
+          src={privateVaultImage}
           alt="Vault Preview Blurred"
           fill
-          className="object-cover filter blur-xl brightness-[0.2] grayscale contrast-125 scale-105"
+          className="object-cover filter blur-[4.9px] brightness-[.5] grayscale-4 contrast-125 scale-105"
         />
       </div>
 
